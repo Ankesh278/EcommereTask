@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/widgets/app_button.dart';
-import '../../../../core/widgets/app_snackbar.dart';
 import '../../../cart/presentation/cubit/cart_cubit.dart';
 import '../../../cart/presentation/cubit/cart_state.dart';
 import '../../domain/entities/product_entity.dart';
@@ -59,9 +58,6 @@ class AddToCartButton extends StatelessWidget {
       onPressed!();
     } else {
       context.read<CartCubit>().addToCart(product);
-      if (showFeedback) {
-        AppSnackBar.showSuccess(context, '${product.name} added to cart');
-      }
     }
   }
 
