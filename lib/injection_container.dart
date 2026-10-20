@@ -15,25 +15,34 @@ import 'features/products/presentation/cubit/product_cubit.dart';
 import 'features/cart/domain/usecases/calculate_cart_total_usecase.dart';
 import 'features/cart/presentation/cubit/cart_cubit.dart';
 
-final sl = GetIt.instance;
+/// Central Dependency Injection Service Locator.
+/// Named plainly and directly according to its architectural role.
+final serviceLocator = GetIt.instance;
+
+/// Short alias for backwards compatibility with tests and callers.
+final sl = serviceLocator;
 
 Future<void> initDependencies() async {
   // ----------------------------------------------------
-  // Features - Auth
+  // Features - Authentication
   // ----------------------------------------------------
-  // Cubit (Factory: fresh instance when requested)
-  sl.registerFactory<AuthCubit>(() => AuthCubit(loginUseCase: sl()));
+  // Cubit (Factory: fresh instance whenever requested by a route)
+  serviceLocator.registerFactory<AuthCubit>(
+    () => AuthCubit(loginUseCase: serviceLocator()),
+  );
 
   // Use Cases
-  sl.registerLazySingleton<LoginUseCase>(() => LoginUseCase(sl()));
+  serviceLocator.registerLazySingleton<LoginUseCase>(
+    () => LoginUseCase(serviceLocator()),
+  );
 
   // Repository
-  sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(localDataSource: sl()),
+  serviceLocator.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(localDataSource: serviceLocator()),
   );
 
   // Data Source
-  sl.registerLazySingleton<AuthLocalDataSource>(
+  serviceLocator.registerLazySingleton<AuthLocalDataSource>(
     () => AuthLocalDataSourceImpl(),
   );
 
@@ -41,20 +50,22 @@ Future<void> initDependencies() async {
   // Features - Products
   // ----------------------------------------------------
   // Cubit
-  sl.registerFactory<ProductCubit>(
-    () => ProductCubit(getProductsUseCase: sl()),
+  serviceLocator.registerFactory<ProductCubit>(
+    () => ProductCubit(getProductsUseCase: serviceLocator()),
   );
 
   // Use Cases
-  sl.registerLazySingleton<GetProductsUseCase>(() => GetProductsUseCase(sl()));
+  serviceLocator.registerLazySingleton<GetProductsUseCase>(
+    () => GetProductsUseCase(serviceLocator()),
+  );
 
   // Repository
-  sl.registerLazySingleton<ProductRepository>(
-    () => ProductRepositoryImpl(localDataSource: sl()),
+  serviceLocator.registerLazySingleton<ProductRepository>(
+    () => ProductRepositoryImpl(localDataSource: serviceLocator()),
   );
 
   // Data Source
-  sl.registerLazySingleton<ProductLocalDataSource>(
+  serviceLocator.registerLazySingleton<ProductLocalDataSource>(
     () => ProductLocalDataSourceImpl(),
   );
 
@@ -62,12 +73,11 @@ Future<void> initDependencies() async {
   // Features - Cart
   // ----------------------------------------------------
   // Use Cases
-  sl.registerLazySingleton<CalculateCartTotalUseCase>(
+  serviceLocator.registerLazySingleton<CalculateCartTotalUseCase>(
     () => const CalculateCartTotalUseCase(),
   );
 
-  // CartCubit: MUST be a shared Singleton across all screens so that
-  // cart contents, quantity modifications, and badge counts are
-  // preserved seamlessly when navigating between screens.
-  sl.registerLazySingleton<CartCubit>(() => CartCubit());
+  // CartCubit: Registered as a LazySingleton so cart state is shared
+  // across all screens (Product Listing, Cart Screen, Details Modal).
+  serviceLocator.registerLazySingleton<CartCubit>(() => CartCubit());
 }

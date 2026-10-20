@@ -15,75 +15,77 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _loginFormKey = GlobalKey<FormState>();
+  final _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
 
   // Local state strictly for temporary UI concerns
-  bool _obscurePassword = true;
+  bool _isPasswordObscured = true;
   bool _isFormValid = false;
 
   @override
   void initState() {
     super.initState();
-    _emailController.addListener(_validateInputs);
-    _passwordController.addListener(_validateInputs);
+    _emailTextController.addListener(_validateInputs);
+    _passwordTextController.addListener(_validateInputs);
   }
 
   void _validateInputs() {
-    final cubit = context.read<AuthCubit>();
-    final emailError = cubit.validateEmail(_emailController.text);
-    final passwordError = cubit.validatePassword(_passwordController.text);
+    final authCubit = context.read<AuthCubit>();
+    final emailError = authCubit.validateEmail(_emailTextController.text);
+    final passwordError = authCubit.validatePassword(
+      _passwordTextController.text,
+    );
 
-    final isValid = emailError == null && passwordError == null;
-    if (isValid != _isFormValid) {
+    final isInputValid = emailError == null && passwordError == null;
+    if (isInputValid != _isFormValid) {
       setState(() {
-        _isFormValid = isValid;
+        _isFormValid = isInputValid;
       });
     }
   }
 
   @override
   void dispose() {
-    _emailController.removeListener(_validateInputs);
-    _passwordController.removeListener(_validateInputs);
-    _emailController.dispose();
-    _passwordController.dispose();
+    _emailTextController.removeListener(_validateInputs);
+    _passwordTextController.removeListener(_validateInputs);
+    _emailTextController.dispose();
+    _passwordTextController.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
   }
 
-  void _submit() {
-    if (_isFormValid && (_formKey.currentState?.validate() ?? false)) {
+  void _handleLoginSubmit() {
+    if (_isFormValid && (_loginFormKey.currentState?.validate() ?? false)) {
       FocusScope.of(context).unfocus();
       context.read<AuthCubit>().login(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
+        email: _emailTextController.text.trim(),
+        password: _passwordTextController.text,
       );
     }
   }
 
   void _fillDemoCredentials() {
-    _emailController.text = AppConstants.demoEmail;
-    _passwordController.text = AppConstants.demoPassword;
+    _emailTextController.text = AppConstants.demoEmail;
+    _passwordTextController.text = AppConstants.demoPassword;
     _validateInputs();
   }
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AuthCubit>();
+    final authCubit = context.read<AuthCubit>();
 
     return Form(
-      key: _formKey,
+      key: _loginFormKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppTextField(
-            controller: _emailController,
+            controller: _emailTextController,
             focusNode: _emailFocusNode,
             labelText: 'Email Address',
             hintText: 'e.g. ${AppConstants.demoEmail}',
@@ -93,22 +95,22 @@ class _LoginFormState extends State<LoginForm> {
             onFieldSubmitted: (_) {
               FocusScope.of(context).requestFocus(_passwordFocusNode);
             },
-            validator: cubit.validateEmail,
+            validator: authCubit.validateEmail,
           ),
           const SizedBox(height: 18),
           AppTextField(
-            controller: _passwordController,
+            controller: _passwordTextController,
             focusNode: _passwordFocusNode,
             labelText: 'Password',
             hintText: 'Enter your password',
             prefixIcon: Icons.lock_outline,
-            obscureText: _obscurePassword,
+            obscureText: _isPasswordObscured,
             textInputAction: TextInputAction.done,
-            onFieldSubmitted: (_) => _submit(),
-            validator: cubit.validatePassword,
+            onFieldSubmitted: (_) => _handleLoginSubmit(),
+            validator: authCubit.validatePassword,
             suffixIcon: IconButton(
               icon: Icon(
-                _obscurePassword
+                _isPasswordObscured
                     ? Icons.visibility_off_outlined
                     : Icons.visibility_outlined,
                 color: AppColors.textSecondary,
@@ -116,21 +118,23 @@ class _LoginFormState extends State<LoginForm> {
               ),
               onPressed: () {
                 setState(() {
-                  _obscurePassword = !_obscurePassword;
+                  _isPasswordObscured = !_isPasswordObscured;
                 });
               },
             ),
           ),
           const SizedBox(height: 24),
           BlocBuilder<AuthCubit, AuthState>(
-            builder: (context, state) {
-              final isLoading = state is AuthLoading;
+            builder: (context, authState) {
+              final isAuthenticationLoading = authState is AuthLoading;
 
               return AppButton(
                 text: 'Sign In',
-                isLoading: isLoading,
+                isLoading: isAuthenticationLoading,
                 icon: Icons.login_rounded,
-                onPressed: (_isFormValid && !isLoading) ? _submit : null,
+                onPressed: (_isFormValid && !isAuthenticationLoading)
+                    ? _handleLoginSubmit
+                    : null,
               );
             },
           ),

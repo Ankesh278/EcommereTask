@@ -29,13 +29,13 @@ class EmptyStateView extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.spacingXL,
+          horizontal: AppDimensions.spacingExtraLarge,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(AppDimensions.spacingLG),
+              padding: const EdgeInsets.all(AppDimensions.spacingLarge),
               decoration: BoxDecoration(
                 color: AppColors.surfaceVariant,
                 shape: BoxShape.circle,
@@ -43,20 +43,20 @@ class EmptyStateView extends StatelessWidget {
               ),
               child: Icon(icon, size: 64, color: AppColors.textSecondary),
             ),
-            const SizedBox(height: AppDimensions.spacingLG),
+            const SizedBox(height: AppDimensions.spacingLarge),
             Text(
               title,
               style: AppTextStyles.headingLarge,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppDimensions.spacingSM),
+            const SizedBox(height: AppDimensions.spacingSmall),
             Text(
               message,
               textAlign: TextAlign.center,
               style: AppTextStyles.bodyMedium,
             ),
             if (actionText != null && onAction != null) ...[
-              const SizedBox(height: AppDimensions.spacingXL),
+              const SizedBox(height: AppDimensions.spacingExtraLarge),
               SizedBox(
                 width: 220,
                 child: AppButton(

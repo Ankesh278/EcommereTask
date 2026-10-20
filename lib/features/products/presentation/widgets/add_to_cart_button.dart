@@ -66,7 +66,7 @@ class AddToCartButton extends StatelessWidget {
     );
   }
 
-  void _handleClick(BuildContext context) {
+  void _handleAddToCartClick(BuildContext context) {
     if (onPressed != null) {
       onPressed!();
     } else {
@@ -81,27 +81,27 @@ class AddToCartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(
       builder: (context, cartState) {
-        final int qtyInCart = context.read<CartCubit>().getProductQuantity(
+        final int quantityInCart = context.read<CartCubit>().getProductQuantity(
           product.id,
         );
 
         if (variant == AddToCartButtonVariant.expanded) {
           return AppButton(
             key: buttonKey ?? key,
-            text: qtyInCart > 0
-                ? 'Add to Cart ($qtyInCart in cart)'
+            text: quantityInCart > 0
+                ? 'Add to Cart ($quantityInCart in cart)'
                 : 'Add to Cart',
             icon: Icons.add_shopping_cart_rounded,
-            onPressed: () => _handleClick(context),
+            onPressed: () => _handleAddToCartClick(context),
           );
         }
 
         // Compact variant for ProductCard
         return ElevatedButton(
           key: buttonKey ?? key ?? Key('add_to_cart_${product.id}'),
-          onPressed: () => _handleClick(context),
+          onPressed: () => _handleAddToCartClick(context),
           style: ElevatedButton.styleFrom(
-            backgroundColor: qtyInCart > 0
+            backgroundColor: quantityInCart > 0
                 ? AppColors.accentDark
                 : AppColors.primary,
             foregroundColor: Colors.white,
@@ -109,7 +109,7 @@ class AddToCartButton extends StatelessWidget {
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusSM),
+              borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
             ),
           ),
           child: Row(
@@ -118,7 +118,7 @@ class AddToCartButton extends StatelessWidget {
               const Icon(Icons.add_shopping_cart, size: 14),
               const SizedBox(width: 4),
               Text(
-                qtyInCart > 0 ? '($qtyInCart)' : 'Add',
+                quantityInCart > 0 ? '($quantityInCart)' : 'Add',
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,

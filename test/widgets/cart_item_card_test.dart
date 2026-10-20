@@ -11,7 +11,7 @@ void main() {
     HttpOverrides.global = TestHttpOverrides();
   });
 
-  const tProduct = ProductEntity(
+  const sampleProduct = ProductEntity(
     id: 'prod_001',
     name: 'Heritage Denim Jacket',
     description: 'Durable organic cotton denim.',
@@ -21,23 +21,23 @@ void main() {
     rating: 4.8,
   );
 
-  const tCartItem = CartItemEntity(product: tProduct, quantity: 2);
+  const sampleCartItem = CartItemEntity(product: sampleProduct, quantity: 2);
 
   testWidgets('CartItemCard renders details and triggers callbacks correctly', (
     WidgetTester tester,
   ) async {
-    bool incrementCalled = false;
-    bool decrementCalled = false;
-    bool removeCalled = false;
+    bool isIncrementCallbackCalled = false;
+    bool isDecrementCallbackCalled = false;
+    bool isRemoveCallbackCalled = false;
 
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: CartItemCard(
-            item: tCartItem,
-            onIncrement: () => incrementCalled = true,
-            onDecrement: () => decrementCalled = true,
-            onRemove: () => removeCalled = true,
+            item: sampleCartItem,
+            onIncrement: () => isIncrementCallbackCalled = true,
+            onDecrement: () => isDecrementCallbackCalled = true,
+            onRemove: () => isRemoveCallbackCalled = true,
           ),
         ),
       ),
@@ -47,29 +47,29 @@ void main() {
 
     // Verify product name and pricing
     expect(find.text('Heritage Denim Jacket'), findsOneWidget);
-    expect(find.text('₹${tProduct.price.toInt()} each'), findsOneWidget);
-    expect(find.text('₹${tCartItem.totalPrice.toInt()}'), findsOneWidget);
+    expect(find.text('₹${sampleProduct.price.toInt()} each'), findsOneWidget);
+    expect(find.text('₹${sampleCartItem.totalPrice.toInt()}'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
 
     // Test increment
-    final incButton = find.byKey(const Key('increment_prod_001'));
-    expect(incButton, findsOneWidget);
-    await tester.tap(incButton);
+    final incrementButton = find.byKey(const Key('increment_prod_001'));
+    expect(incrementButton, findsOneWidget);
+    await tester.tap(incrementButton);
     await tester.pump();
-    expect(incrementCalled, isTrue);
+    expect(isIncrementCallbackCalled, isTrue);
 
     // Test decrement
-    final decButton = find.byKey(const Key('decrement_prod_001'));
-    expect(decButton, findsOneWidget);
-    await tester.tap(decButton);
+    final decrementButton = find.byKey(const Key('decrement_prod_001'));
+    expect(decrementButton, findsOneWidget);
+    await tester.tap(decrementButton);
     await tester.pump();
-    expect(decrementCalled, isTrue);
+    expect(isDecrementCallbackCalled, isTrue);
 
     // Test remove
     final removeButton = find.byKey(const Key('remove_prod_001'));
     expect(removeButton, findsOneWidget);
     await tester.tap(removeButton);
     await tester.pump();
-    expect(removeCalled, isTrue);
+    expect(isRemoveCallbackCalled, isTrue);
   });
 }

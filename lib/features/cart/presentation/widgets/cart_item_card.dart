@@ -31,7 +31,7 @@ class CartItemCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
         border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
@@ -48,8 +48,8 @@ class CartItemCard extends StatelessWidget {
           // Reusable Product Thumbnail
           ProductNetworkImage(
             imageUrl: product.imageUrl,
-            width: AppDimensions.thumbnailSize,
-            height: AppDimensions.thumbnailSize,
+            width: AppDimensions.cartItemThumbnailSize,
+            height: AppDimensions.cartItemThumbnailSize,
             borderRadius: BorderRadius.circular(10),
             placeholderCategory: product.category,
           ),
@@ -80,7 +80,7 @@ class CartItemCard extends StatelessWidget {
                     InkWell(
                       key: Key('remove_${product.id}'),
                       borderRadius: BorderRadius.circular(
-                        AppDimensions.radiusSM,
+                        AppDimensions.radiusSmall,
                       ),
                       onTap: () {
                         if (onRemove != null) {

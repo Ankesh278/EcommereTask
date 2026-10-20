@@ -1,31 +1,37 @@
 import 'package:equatable/equatable.dart';
 
-sealed class Result<S, F> extends Equatable {
+/// Represents a result of an operation that can either be a Success or an Error.
+/// Adheres to Clean Architecture functional error-handling.
+sealed class Result<SuccessData, FailureData> extends Equatable {
   const Result();
 
-  bool get isSuccess => this is Success<S, F>;
-  bool get isError => this is Error<S, F>;
+  bool get isSuccess => this is Success<SuccessData, FailureData>;
+  bool get isError => this is Error<SuccessData, FailureData>;
 
-  S? get dataOrNull => switch (this) {
+  SuccessData? get dataOrNull => switch (this) {
     Success(:final data) => data,
     Error() => null,
   };
 
-  F? get errorOrNull => switch (this) {
+  FailureData? get errorOrNull => switch (this) {
     Success() => null,
     Error(:final failure) => failure,
   };
 
-  R fold<R>(R Function(F failure) onError, R Function(S data) onSuccess) {
+  ReturnType fold<ReturnType>(
+    ReturnType Function(FailureData failure) onFailure,
+    ReturnType Function(SuccessData data) onSuccess,
+  ) {
     return switch (this) {
       Success(:final data) => onSuccess(data),
-      Error(:final failure) => onError(failure),
+      Error(:final failure) => onFailure(failure),
     };
   }
 }
 
-class Success<S, F> extends Result<S, F> {
-  final S data;
+class Success<SuccessData, FailureData>
+    extends Result<SuccessData, FailureData> {
+  final SuccessData data;
 
   const Success(this.data);
 
@@ -33,8 +39,8 @@ class Success<S, F> extends Result<S, F> {
   List<Object?> get props => [data];
 }
 
-class Error<S, F> extends Result<S, F> {
-  final F failure;
+class Error<SuccessData, FailureData> extends Result<SuccessData, FailureData> {
+  final FailureData failure;
 
   const Error(this.failure);
 

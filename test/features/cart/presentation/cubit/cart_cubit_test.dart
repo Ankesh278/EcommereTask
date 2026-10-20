@@ -16,7 +16,7 @@ void main() {
     cartCubit.close();
   });
 
-  const tProductA = ProductEntity(
+  const firstTestProduct = ProductEntity(
     id: 'prod_001',
     name: 'Denim Jacket',
     description: 'Classic denim jacket',
@@ -26,7 +26,7 @@ void main() {
     rating: 4.8,
   );
 
-  const tProductB = ProductEntity(
+  const secondTestProduct = ProductEntity(
     id: 'prod_002',
     name: 'Cotton T-Shirt',
     description: 'Casual t-shirt',
@@ -54,10 +54,10 @@ void main() {
     blocTest<CartCubit, CartState>(
       'adds a new product with initial quantity of 1',
       build: () => cartCubit,
-      act: (cubit) => cubit.addToCart(tProductA),
+      act: (cubit) => cubit.addToCart(firstTestProduct),
       expect: () => [
         const CartState(
-          items: [CartItemEntity(product: tProductA, quantity: 1)],
+          items: [CartItemEntity(product: firstTestProduct, quantity: 1)],
         ),
       ],
       verify: (cubit) {
@@ -71,15 +71,15 @@ void main() {
       'prevents duplicate entries when adding same product again by incrementing quantity',
       build: () => cartCubit,
       act: (cubit) {
-        cubit.addToCart(tProductA);
-        cubit.addToCart(tProductA);
+        cubit.addToCart(firstTestProduct);
+        cubit.addToCart(firstTestProduct);
       },
       expect: () => [
         const CartState(
-          items: [CartItemEntity(product: tProductA, quantity: 1)],
+          items: [CartItemEntity(product: firstTestProduct, quantity: 1)],
         ),
         const CartState(
-          items: [CartItemEntity(product: tProductA, quantity: 2)],
+          items: [CartItemEntity(product: firstTestProduct, quantity: 2)],
         ),
       ],
       verify: (cubit) {
@@ -95,17 +95,17 @@ void main() {
       'adds multiple distinct products and calculates cumulative badge count and total price',
       build: () => cartCubit,
       act: (cubit) {
-        cubit.addToCart(tProductA);
-        cubit.addToCart(tProductB);
+        cubit.addToCart(firstTestProduct);
+        cubit.addToCart(secondTestProduct);
       },
       expect: () => [
         const CartState(
-          items: [CartItemEntity(product: tProductA, quantity: 1)],
+          items: [CartItemEntity(product: firstTestProduct, quantity: 1)],
         ),
         const CartState(
           items: [
-            CartItemEntity(product: tProductA, quantity: 1),
-            CartItemEntity(product: tProductB, quantity: 1),
+            CartItemEntity(product: firstTestProduct, quantity: 1),
+            CartItemEntity(product: secondTestProduct, quantity: 1),
           ],
         ),
       ],
@@ -122,12 +122,12 @@ void main() {
       'increaseQuantity increments item quantity and updates total price',
       build: () => cartCubit,
       seed: () => const CartState(
-        items: [CartItemEntity(product: tProductA, quantity: 1)],
+        items: [CartItemEntity(product: firstTestProduct, quantity: 1)],
       ),
-      act: (cubit) => cubit.increaseQuantity(tProductA.id),
+      act: (cubit) => cubit.increaseQuantity(firstTestProduct.id),
       expect: () => [
         const CartState(
-          items: [CartItemEntity(product: tProductA, quantity: 2)],
+          items: [CartItemEntity(product: firstTestProduct, quantity: 2)],
         ),
       ],
       verify: (cubit) {
@@ -140,12 +140,12 @@ void main() {
       'decreaseQuantity decrements quantity when quantity > 1',
       build: () => cartCubit,
       seed: () => const CartState(
-        items: [CartItemEntity(product: tProductA, quantity: 3)],
+        items: [CartItemEntity(product: firstTestProduct, quantity: 3)],
       ),
-      act: (cubit) => cubit.decreaseQuantity(tProductA.id),
+      act: (cubit) => cubit.decreaseQuantity(firstTestProduct.id),
       expect: () => [
         const CartState(
-          items: [CartItemEntity(product: tProductA, quantity: 2)],
+          items: [CartItemEntity(product: firstTestProduct, quantity: 2)],
         ),
       ],
       verify: (cubit) {
@@ -158,9 +158,9 @@ void main() {
       'decreaseQuantity automatically removes item when quantity reaches zero (from 1)',
       build: () => cartCubit,
       seed: () => const CartState(
-        items: [CartItemEntity(product: tProductA, quantity: 1)],
+        items: [CartItemEntity(product: firstTestProduct, quantity: 1)],
       ),
-      act: (cubit) => cubit.decreaseQuantity(tProductA.id),
+      act: (cubit) => cubit.decreaseQuantity(firstTestProduct.id),
       expect: () => [const CartState(items: [])],
       verify: (cubit) {
         expect(cubit.state.items, isEmpty);
@@ -177,14 +177,14 @@ void main() {
       build: () => cartCubit,
       seed: () => const CartState(
         items: [
-          CartItemEntity(product: tProductA, quantity: 5),
-          CartItemEntity(product: tProductB, quantity: 2),
+          CartItemEntity(product: firstTestProduct, quantity: 5),
+          CartItemEntity(product: secondTestProduct, quantity: 2),
         ],
       ),
-      act: (cubit) => cubit.removeFromCart(tProductA.id),
+      act: (cubit) => cubit.removeFromCart(firstTestProduct.id),
       expect: () => [
         const CartState(
-          items: [CartItemEntity(product: tProductB, quantity: 2)],
+          items: [CartItemEntity(product: secondTestProduct, quantity: 2)],
         ),
       ],
       verify: (cubit) {
@@ -199,8 +199,8 @@ void main() {
       build: () => cartCubit,
       seed: () => const CartState(
         items: [
-          CartItemEntity(product: tProductA, quantity: 2),
-          CartItemEntity(product: tProductB, quantity: 3),
+          CartItemEntity(product: firstTestProduct, quantity: 2),
+          CartItemEntity(product: secondTestProduct, quantity: 3),
         ],
       ),
       act: (cubit) => cubit.clearCart(),
@@ -215,11 +215,11 @@ void main() {
     test('getProductQuantity returns accurate count or 0 if absent', () {
       cartCubit.emit(
         const CartState(
-          items: [CartItemEntity(product: tProductA, quantity: 3)],
+          items: [CartItemEntity(product: firstTestProduct, quantity: 3)],
         ),
       );
 
-      expect(cartCubit.getProductQuantity(tProductA.id), 3);
+      expect(cartCubit.getProductQuantity(firstTestProduct.id), 3);
       expect(cartCubit.getProductQuantity('non_existent_id'), 0);
     });
 
@@ -229,8 +229,8 @@ void main() {
         cartCubit.emit(
           const CartState(
             items: [
-              CartItemEntity(product: tProductA, quantity: 3),
-              CartItemEntity(product: tProductB, quantity: 2),
+              CartItemEntity(product: firstTestProduct, quantity: 3),
+              CartItemEntity(product: secondTestProduct, quantity: 2),
             ],
           ),
         );
@@ -244,11 +244,11 @@ void main() {
 
     test('state is immutable and collections are not mutated in place', () {
       final initialList = [
-        const CartItemEntity(product: tProductA, quantity: 1),
+        const CartItemEntity(product: firstTestProduct, quantity: 1),
       ];
       cartCubit.emit(CartState(items: initialList));
 
-      cartCubit.increaseQuantity(tProductA.id);
+      cartCubit.increaseQuantity(firstTestProduct.id);
 
       // Verify that initialList was not modified in-place
       expect(initialList.first.quantity, 1);

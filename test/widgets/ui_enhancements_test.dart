@@ -8,7 +8,7 @@ void main() {
     testWidgets('renders item count, price, and responds to tap', (
       WidgetTester tester,
     ) async {
-      bool tapped = false;
+      bool isFloatingCartButtonTapped = false;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -16,7 +16,7 @@ void main() {
             body: FloatingCartButton(
               itemCount: 3,
               totalPrice: '₹2,499',
-              onPressed: () => tapped = true,
+              onPressed: () => isFloatingCartButtonTapped = true,
             ),
           ),
         ),
@@ -30,7 +30,7 @@ void main() {
       await tester.tap(find.byKey(const Key('floating_cart_button')));
       await tester.pump();
 
-      expect(tapped, isTrue);
+      expect(isFloatingCartButtonTapped, isTrue);
     });
   });
 
@@ -38,7 +38,7 @@ void main() {
     testWidgets('renders title, message, and executes onConfirm on Log Out tap', (
       WidgetTester tester,
     ) async {
-      bool confirmed = false;
+      bool isLogoutConfirmed = false;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -47,7 +47,7 @@ void main() {
               builder: (context) => ElevatedButton(
                 onPressed: () => LogoutConfirmationDialog.show(
                   context,
-                  onConfirm: () => confirmed = true,
+                  onConfirm: () => isLogoutConfirmed = true,
                 ),
                 child: const Text('Show Dialog'),
               ),
@@ -73,13 +73,13 @@ void main() {
       await tester.tap(find.text('Log Out'));
       await tester.pumpAndSettle();
 
-      expect(confirmed, isTrue);
+      expect(isLogoutConfirmed, isTrue);
     });
 
     testWidgets('Cancel button dismisses dialog without confirming', (
       WidgetTester tester,
     ) async {
-      bool confirmed = false;
+      bool isLogoutConfirmed = false;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -88,7 +88,7 @@ void main() {
               builder: (context) => ElevatedButton(
                 onPressed: () => LogoutConfirmationDialog.show(
                   context,
-                  onConfirm: () => confirmed = true,
+                  onConfirm: () => isLogoutConfirmed = true,
                 ),
                 child: const Text('Show Dialog'),
               ),
@@ -104,7 +104,7 @@ void main() {
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
 
-      expect(confirmed, isFalse);
+      expect(isLogoutConfirmed, isFalse);
       expect(find.text('Log out?'), findsNothing);
     });
   });

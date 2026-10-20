@@ -13,7 +13,7 @@ void main() {
     HttpOverrides.global = TestHttpOverrides();
   });
 
-  const tProduct = ProductEntity(
+  const sampleProduct = ProductEntity(
     id: 'prod_001',
     name: 'Classic Cotton T-Shirt',
     description:
@@ -37,7 +37,7 @@ void main() {
               child: Builder(
                 builder: (context) => ElevatedButton(
                   onPressed: () =>
-                      ProductDetailsBottomSheet.show(context, tProduct),
+                      ProductDetailsBottomSheet.show(context, sampleProduct),
                   child: const Text('Open Sheet'),
                 ),
               ),
@@ -56,18 +56,23 @@ void main() {
       expect(find.text('Classic Cotton T-Shirt'), findsOneWidget);
       expect(find.text('T-SHIRTS'), findsOneWidget);
       expect(
-        find.text('${AppConstants.currencySymbol}${tProduct.price.toInt()}'),
+        find.text(
+          '${AppConstants.currencySymbol}${sampleProduct.price.toInt()}',
+        ),
         findsOneWidget,
       );
-      expect(find.text(tProduct.description), findsOneWidget);
+      expect(find.text(sampleProduct.description), findsOneWidget);
       expect(find.text('4.7'), findsOneWidget);
 
       // Verify Add to Cart button in sheet
-      final addToCartBtn = find.widgetWithText(ElevatedButton, 'Add to Cart');
-      expect(addToCartBtn, findsOneWidget);
+      final addToCartButton = find.widgetWithText(
+        ElevatedButton,
+        'Add to Cart',
+      );
+      expect(addToCartButton, findsOneWidget);
 
       // Tap Add to Cart in bottom sheet
-      await tester.tap(addToCartBtn);
+      await tester.tap(addToCartButton);
       await tester.pump();
 
       // Verify item was added to CartCubit

@@ -27,14 +27,14 @@ void main() {
       expect(find.text('Password'), findsOneWidget);
 
       // 3. Auto-fill demo credentials
-      final autoFillBtn = find.text('Auto Fill');
-      expect(autoFillBtn, findsOneWidget);
-      await tester.tap(autoFillBtn);
+      final autoFillButton = find.text('Auto Fill');
+      expect(autoFillButton, findsOneWidget);
+      await tester.tap(autoFillButton);
       await tester.pump();
 
       // 4. Tap Sign In
-      final signInBtn = find.text('Sign In');
-      await tester.tap(signInBtn);
+      final signInButton = find.text('Sign In');
+      await tester.tap(signInButton);
 
       // Pump past the 500ms mock delay for login
       await tester.pump(const Duration(milliseconds: 600));
@@ -83,9 +83,9 @@ void main() {
       expect(find.text('Proceed to Checkout'), findsOneWidget);
 
       // 8. Return to Products Screen
-      final backBtn = find.byType(BackButton);
-      if (backBtn.evaluate().isNotEmpty) {
-        await tester.tap(backBtn);
+      final backButton = find.byType(BackButton);
+      if (backButton.evaluate().isNotEmpty) {
+        await tester.tap(backButton);
         await tester.pump(const Duration(milliseconds: 400));
         await tester.pump();
       } else {

@@ -9,53 +9,75 @@ import 'package:ecommercetask/features/auth/domain/usecases/login_usecase.dart';
 class MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
-  late LoginUseCase useCase;
-  late MockAuthRepository mockRepository;
+  late LoginUseCase loginUseCase;
+  late MockAuthRepository mockAuthRepository;
 
   setUp(() {
-    mockRepository = MockAuthRepository();
-    useCase = LoginUseCase(mockRepository);
+    mockAuthRepository = MockAuthRepository();
+    loginUseCase = LoginUseCase(mockAuthRepository);
   });
 
-  const tEmail = 'user@example.com';
-  const tPassword = 'password123';
-  const tUser = UserEntity(id: 'user_001', name: 'Alex Morgan', email: tEmail);
+  const sampleEmail = 'user@example.com';
+  const samplePassword = 'password123';
+  const sampleUser = UserEntity(
+    id: 'user_001',
+    name: 'Alex Morgan',
+    email: sampleEmail,
+  );
 
   test(
     'should return UserEntity on successful login from repository',
     () async {
       // Arrange
       when(
-        () => mockRepository.login(email: tEmail, password: tPassword),
-      ).thenAnswer((_) async => const Success(tUser));
+        () => mockAuthRepository.login(
+          email: sampleEmail,
+          password: samplePassword,
+        ),
+      ).thenAnswer((_) async => const Success(sampleUser));
 
       // Act
-      final result = await useCase(email: tEmail, password: tPassword);
+      final loginResult = await loginUseCase(
+        email: sampleEmail,
+        password: samplePassword,
+      );
 
       // Assert
-      expect(result, const Success<UserEntity, Failure>(tUser));
+      expect(loginResult, const Success<UserEntity, Failure>(sampleUser));
       verify(
-        () => mockRepository.login(email: tEmail, password: tPassword),
+        () => mockAuthRepository.login(
+          email: sampleEmail,
+          password: samplePassword,
+        ),
       ).called(1);
-      verifyNoMoreInteractions(mockRepository);
+      verifyNoMoreInteractions(mockAuthRepository);
     },
   );
 
   test('should return AuthFailure when repository login fails', () async {
     // Arrange
-    const tFailure = AuthFailure('Invalid credentials');
+    const sampleFailure = AuthFailure('Invalid credentials');
     when(
-      () => mockRepository.login(email: tEmail, password: tPassword),
-    ).thenAnswer((_) async => const Error(tFailure));
+      () => mockAuthRepository.login(
+        email: sampleEmail,
+        password: samplePassword,
+      ),
+    ).thenAnswer((_) async => const Error(sampleFailure));
 
     // Act
-    final result = await useCase(email: tEmail, password: tPassword);
+    final loginResult = await loginUseCase(
+      email: sampleEmail,
+      password: samplePassword,
+    );
 
     // Assert
-    expect(result, const Error<UserEntity, Failure>(tFailure));
+    expect(loginResult, const Error<UserEntity, Failure>(sampleFailure));
     verify(
-      () => mockRepository.login(email: tEmail, password: tPassword),
+      () => mockAuthRepository.login(
+        email: sampleEmail,
+        password: samplePassword,
+      ),
     ).called(1);
-    verifyNoMoreInteractions(mockRepository);
+    verifyNoMoreInteractions(mockAuthRepository);
   });
 }

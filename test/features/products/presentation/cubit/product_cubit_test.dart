@@ -11,19 +11,19 @@ import 'package:ecommercetask/features/products/presentation/cubit/product_state
 class MockGetProductsUseCase extends Mock implements GetProductsUseCase {}
 
 void main() {
-  late ProductCubit cubit;
+  late ProductCubit productCubit;
   late MockGetProductsUseCase mockGetProductsUseCase;
 
   setUp(() {
     mockGetProductsUseCase = MockGetProductsUseCase();
-    cubit = ProductCubit(getProductsUseCase: mockGetProductsUseCase);
+    productCubit = ProductCubit(getProductsUseCase: mockGetProductsUseCase);
   });
 
   tearDown(() {
-    cubit.close();
+    productCubit.close();
   });
 
-  final tProducts = List.generate(
+  final sampleProductList = List.generate(
     6,
     (index) => ProductEntity(
       id: 'prod_$index',
@@ -37,7 +37,7 @@ void main() {
   );
 
   test('initial state should be ProductInitial', () {
-    expect(cubit.state, const ProductInitial());
+    expect(productCubit.state, const ProductInitial());
   });
 
   blocTest<ProductCubit, ProductState>(
@@ -45,14 +45,14 @@ void main() {
     build: () {
       when(
         () => mockGetProductsUseCase(),
-      ).thenAnswer((_) async => Success(tProducts));
-      return cubit;
+      ).thenAnswer((_) async => Success(sampleProductList));
+      return productCubit;
     },
     act: (cubit) => cubit.loadProducts(),
-    expect: () => [const ProductLoading(), ProductLoaded(tProducts)],
+    expect: () => [const ProductLoading(), ProductLoaded(sampleProductList)],
     verify: (_) {
       verify(() => mockGetProductsUseCase()).called(1);
-      expect(tProducts.length, greaterThanOrEqualTo(5));
+      expect(sampleProductList.length, greaterThanOrEqualTo(5));
     },
   );
 
@@ -62,7 +62,7 @@ void main() {
       when(() => mockGetProductsUseCase()).thenAnswer(
         (_) async => const Error(ProductFailure('Server connection failed')),
       );
-      return cubit;
+      return productCubit;
     },
     act: (cubit) => cubit.loadProducts(),
     expect: () => [

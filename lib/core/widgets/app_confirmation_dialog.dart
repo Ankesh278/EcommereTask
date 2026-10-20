@@ -56,12 +56,12 @@ class AppConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusExtraLarge),
       ),
       elevation: 4,
       backgroundColor: AppColors.surface,
       child: Padding(
-        padding: const EdgeInsets.all(AppDimensions.spacingLG),
+        padding: const EdgeInsets.all(AppDimensions.spacingLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -80,7 +80,7 @@ class AppConfirmationDialog extends StatelessWidget {
                 size: 28,
               ),
             ),
-            const SizedBox(height: AppDimensions.spacingMD),
+            const SizedBox(height: AppDimensions.spacingMedium),
 
             // Title
             Text(
@@ -92,7 +92,7 @@ class AppConfirmationDialog extends StatelessWidget {
                 color: AppColors.textPrimary,
               ),
             ),
-            const SizedBox(height: AppDimensions.spacingSM),
+            const SizedBox(height: AppDimensions.spacingSmall),
 
             // Message
             Text(
@@ -104,7 +104,7 @@ class AppConfirmationDialog extends StatelessWidget {
                 height: 1.4,
               ),
             ),
-            const SizedBox(height: AppDimensions.spacingLG),
+            const SizedBox(height: AppDimensions.spacingLarge),
 
             // Action Buttons
             Row(
@@ -122,7 +122,7 @@ class AppConfirmationDialog extends StatelessWidget {
                     size: AppButtonSize.medium,
                   ),
                 ),
-                const SizedBox(width: AppDimensions.spacingMD),
+                const SizedBox(width: AppDimensions.spacingMedium),
                 Expanded(
                   child: isDestructive
                       ? AppButton.danger(

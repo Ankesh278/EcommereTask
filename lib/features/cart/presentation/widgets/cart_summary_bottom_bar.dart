@@ -10,7 +10,7 @@ import '../cubit/cart_state.dart';
 class CartSummaryBottomBar extends StatelessWidget {
   const CartSummaryBottomBar({super.key});
 
-  void _showCheckoutDialog(BuildContext context, CartState state) {
+  void _showCheckoutNoticeDialog(BuildContext context, CartState cartState) {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -51,7 +51,7 @@ class CartSummaryBottomBar extends StatelessWidget {
                         style: TextStyle(fontSize: 13),
                       ),
                       Text(
-                        '${state.distinctProductCount}',
+                        '${cartState.distinctProductCount}',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 13,
@@ -68,7 +68,7 @@ class CartSummaryBottomBar extends StatelessWidget {
                         style: TextStyle(fontSize: 13),
                       ),
                       Text(
-                        '${state.totalItemCount}',
+                        '${cartState.totalItemCount}',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 13,
@@ -85,7 +85,7 @@ class CartSummaryBottomBar extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        '${AppConstants.currencySymbol}${state.totalPrice.toInt()}',
+                        '${AppConstants.currencySymbol}${cartState.totalPrice.toInt()}',
                         style: const TextStyle(
                           fontWeight: FontWeight.w800,
                           color: AppColors.primary,
@@ -123,8 +123,8 @@ class CartSummaryBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(
-      builder: (context, state) {
-        if (state.isEmpty) return const SizedBox.shrink();
+      builder: (context, cartState) {
+        if (cartState.isEmpty) return const SizedBox.shrink();
 
         return Container(
           padding: const EdgeInsets.all(20),
@@ -150,11 +150,11 @@ class CartSummaryBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Unique Products (${state.distinctProductCount})',
+                      'Unique Products (${cartState.distinctProductCount})',
                       style: AppTextStyles.bodyMedium,
                     ),
                     Text(
-                      '${state.totalItemCount} items total',
+                      '${cartState.totalItemCount} items total',
                       style: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                         color: AppColors.textPrimary,
@@ -171,7 +171,7 @@ class CartSummaryBottomBar extends StatelessWidget {
                       style: AppTextStyles.bodyMedium,
                     ),
                     Text(
-                      '${AppConstants.currencySymbol}${state.totalPrice.toInt()}',
+                      '${AppConstants.currencySymbol}${cartState.totalPrice.toInt()}',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -196,7 +196,7 @@ class CartSummaryBottomBar extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${AppConstants.currencySymbol}${state.totalPrice.toInt()}',
+                      '${AppConstants.currencySymbol}${cartState.totalPrice.toInt()}',
                       key: const Key('cart_total_price'),
                       style: AppTextStyles.priceTotal,
                     ),
@@ -206,7 +206,8 @@ class CartSummaryBottomBar extends StatelessWidget {
                 AppButton(
                   text: 'Proceed to Checkout',
                   icon: Icons.lock_outline_rounded,
-                  onPressed: () => _showCheckoutDialog(context, state),
+                  onPressed: () =>
+                      _showCheckoutNoticeDialog(context, cartState),
                 ),
               ],
             ),

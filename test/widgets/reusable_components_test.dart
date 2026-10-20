@@ -18,7 +18,7 @@ void main() {
     HttpOverrides.global = TestHttpOverrides();
   });
 
-  const tProduct = ProductEntity(
+  const sampleTestProduct = ProductEntity(
     id: 'prod_test_001',
     name: 'Silk Blend Shirt',
     description: 'Premium tailored silk shirt.',
@@ -32,7 +32,7 @@ void main() {
     testWidgets(
       'renders primary button, executes onPressed, and handles loading',
       (WidgetTester tester) async {
-        bool pressed = false;
+        bool isButtonPressed = false;
 
         await tester.pumpWidget(
           MaterialApp(
@@ -40,7 +40,7 @@ void main() {
               body: AppButton(
                 text: 'Submit Order',
                 icon: Icons.check,
-                onPressed: () => pressed = true,
+                onPressed: () => isButtonPressed = true,
               ),
             ),
           ),
@@ -51,7 +51,7 @@ void main() {
 
         await tester.tap(find.text('Submit Order'));
         await tester.pump();
-        expect(pressed, isTrue);
+        expect(isButtonPressed, isTrue);
 
         // Test loading state
         await tester.pumpWidget(
@@ -60,7 +60,7 @@ void main() {
               body: AppButton(
                 text: 'Submit Order',
                 isLoading: true,
-                onPressed: () => pressed = true,
+                onPressed: () => isButtonPressed = true,
               ),
             ),
           ),
@@ -100,19 +100,19 @@ void main() {
     testWidgets(
       'renders label, asterisk when required, prefix, and handles input',
       (WidgetTester tester) async {
-        String typedText = '';
-        final controller = TextEditingController();
+        String enteredPhoneNumber = '';
+        final textEditingController = TextEditingController();
 
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
               body: AppTextField(
-                controller: controller,
+                controller: textEditingController,
                 labelText: 'Phone Number',
                 hintText: 'Enter phone',
                 isRequired: true,
                 prefixIcon: Icons.phone,
-                onChanged: (val) => typedText = val,
+                onChanged: (enteredText) => enteredPhoneNumber = enteredText,
               ),
             ),
           ),
@@ -124,8 +124,8 @@ void main() {
         expect(find.byIcon(Icons.phone), findsOneWidget);
 
         await tester.enterText(find.byType(TextFormField), '9876543210');
-        expect(typedText, '9876543210');
-        expect(controller.text, '9876543210');
+        expect(enteredPhoneNumber, '9876543210');
+        expect(textEditingController.text, '9876543210');
       },
     );
   });
@@ -141,7 +141,7 @@ void main() {
             home: Scaffold(
               body: BlocProvider<CartCubit>.value(
                 value: cartCubit,
-                child: AddToCartButton.compact(product: tProduct),
+                child: AddToCartButton.compact(product: sampleTestProduct),
               ),
             ),
           ),
@@ -166,14 +166,14 @@ void main() {
       WidgetTester tester,
     ) async {
       final cartCubit = CartCubit();
-      cartCubit.addToCart(tProduct);
+      cartCubit.addToCart(sampleTestProduct);
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: BlocProvider<CartCubit>.value(
               value: cartCubit,
-              child: AddToCartButton.expanded(product: tProduct),
+              child: AddToCartButton.expanded(product: sampleTestProduct),
             ),
           ),
         ),
@@ -190,17 +190,17 @@ void main() {
     testWidgets(
       'shows delete icon at quantity 1 and remove/increment actions',
       (WidgetTester tester) async {
-        bool incCalled = false;
-        bool decCalled = false;
+        bool isIncrementCallbackCalled = false;
+        bool isDecrementCallbackCalled = false;
 
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
               body: QuantitySelector(
                 quantity: 1,
-                productId: 'test_p1',
-                onIncrement: () => incCalled = true,
-                onDecrement: () => decCalled = true,
+                productId: 'test_product_1',
+                onIncrement: () => isIncrementCallbackCalled = true,
+                onDecrement: () => isDecrementCallbackCalled = true,
               ),
             ),
           ),
@@ -211,10 +211,10 @@ void main() {
         expect(find.byIcon(Icons.add), findsOneWidget);
 
         await tester.tap(find.byIcon(Icons.add));
-        expect(incCalled, isTrue);
+        expect(isIncrementCallbackCalled, isTrue);
 
         await tester.tap(find.byIcon(Icons.delete_outline));
-        expect(decCalled, isTrue);
+        expect(isDecrementCallbackCalled, isTrue);
       },
     );
 
@@ -226,7 +226,7 @@ void main() {
           home: Scaffold(
             body: QuantitySelector(
               quantity: 3,
-              productId: 'test_p2',
+              productId: 'test_product_2',
               onIncrement: () {},
               onDecrement: () {},
             ),
@@ -293,7 +293,7 @@ void main() {
     testWidgets(
       'renders dialog and triggers onConfirm and onCancel callbacks',
       (WidgetTester tester) async {
-        bool confirmed = false;
+        bool isDialogConfirmed = false;
 
         await tester.pumpWidget(
           MaterialApp(
@@ -308,8 +308,10 @@ void main() {
                         message: 'Are you sure you want to delete this order?',
                         confirmText: 'Delete',
                         isDestructive: true,
-                      ).then((res) {
-                        if (res == true) confirmed = true;
+                      ).then((userConfirmationResult) {
+                        if (userConfirmationResult == true) {
+                          isDialogConfirmed = true;
+                        }
                       }),
                   child: const Text('Open Dialog'),
                 ),
@@ -332,7 +334,7 @@ void main() {
         await tester.tap(find.text('Delete'));
         await tester.pumpAndSettle();
 
-        expect(confirmed, isTrue);
+        expect(isDialogConfirmed, isTrue);
       },
     );
   });

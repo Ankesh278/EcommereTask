@@ -11,8 +11,8 @@ class CartBadgeIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(
-      builder: (context, state) {
-        final count = state.totalItemCount;
+      builder: (context, cartState) {
+        final totalCartItemCount = cartState.totalItemCount;
 
         return Stack(
           alignment: Alignment.center,
@@ -25,7 +25,7 @@ class CartBadgeIcon extends StatelessWidget {
                 Navigator.pushNamed(context, AppConstants.routeCart);
               },
             ),
-            if (count > 0)
+            if (totalCartItemCount > 0)
               Positioned(
                 top: 6,
                 right: 6,
@@ -41,7 +41,9 @@ class CartBadgeIcon extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      count > 99 ? '99+' : count.toString(),
+                      totalCartItemCount > 99
+                          ? '99+'
+                          : totalCartItemCount.toString(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 10,

@@ -62,7 +62,7 @@ class ProductNetworkImage extends StatelessWidget {
           ),
           if (placeholderCategory != null &&
               (height == null || height! >= 80)) ...[
-            const SizedBox(height: AppDimensions.spacingXS),
+            const SizedBox(height: AppDimensions.spacingExtraSmall),
             Text(
               placeholderCategory!,
               style: const TextStyle(

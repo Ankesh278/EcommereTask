@@ -41,7 +41,7 @@ class ProductDetailsBottomSheet extends StatelessWidget {
       decoration: const BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppDimensions.radiusXL),
+          top: Radius.circular(AppDimensions.radiusExtraLarge),
         ),
       ),
       child: Column(
@@ -85,8 +85,11 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                   // Reusable Large Product Image
                   ProductNetworkImage(
                     imageUrl: product.imageUrl,
-                    aspectRatio: AppDimensions.sheetImageAspectRatio,
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
+                    aspectRatio:
+                        AppDimensions.productBottomSheetImageAspectRatio,
+                    borderRadius: BorderRadius.circular(
+                      AppDimensions.radiusLarge,
+                    ),
                     placeholderCategory: product.category,
                   ),
                   const SizedBox(height: 16),
@@ -103,7 +106,7 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppColors.surfaceVariant,
                           borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusSM,
+                            AppDimensions.radiusSmall,
                           ),
                           border: Border.all(color: AppColors.border),
                         ),

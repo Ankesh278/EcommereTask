@@ -20,23 +20,25 @@ class QuantitySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAtMinimum = quantity <= 1;
+    final isQuantityAtMinimum = quantity <= 1;
 
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surfaceVariant,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSM),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
         border: Border.all(color: AppColors.border),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Decrement / Delete Button
-          _QuantityIconButton(
+          _QuantitySelectorButton(
             key: productId != null ? Key('decrement_$productId') : null,
-            icon: isAtMinimum ? Icons.delete_outline : Icons.remove,
-            color: isAtMinimum ? AppColors.error : AppColors.textPrimary,
-            tooltip: isAtMinimum ? 'Remove item' : 'Decrease quantity',
+            icon: isQuantityAtMinimum ? Icons.delete_outline : Icons.remove,
+            color: isQuantityAtMinimum
+                ? AppColors.error
+                : AppColors.textPrimary,
+            tooltip: isQuantityAtMinimum ? 'Remove item' : 'Decrease quantity',
             onPressed: onDecrement,
           ),
 
@@ -55,7 +57,7 @@ class QuantitySelector extends StatelessWidget {
           ),
 
           // Increment Button
-          _QuantityIconButton(
+          _QuantitySelectorButton(
             key: productId != null ? Key('increment_$productId') : null,
             icon: Icons.add,
             color: AppColors.textPrimary,
@@ -68,13 +70,13 @@ class QuantitySelector extends StatelessWidget {
   }
 }
 
-class _QuantityIconButton extends StatelessWidget {
+class _QuantitySelectorButton extends StatelessWidget {
   final IconData icon;
   final Color color;
   final String tooltip;
   final VoidCallback onPressed;
 
-  const _QuantityIconButton({
+  const _QuantitySelectorButton({
     super.key,
     required this.icon,
     required this.color,

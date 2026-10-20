@@ -1,31 +1,59 @@
+/// Standardized application design dimensions, paddings, and sizes.
+/// Names are descriptive, straightforward, and strictly represent their purpose.
 class AppDimensions {
   // Spacing & Padding
-  static const double spacingXS = 4.0;
-  static const double spacingSM = 8.0;
-  static const double spacingMD = 16.0;
-  static const double spacingLG = 24.0;
-  static const double spacingXL = 32.0;
+  static const double spacingExtraSmall = 4.0;
+  static const double spacingSmall = 8.0;
+  static const double spacingMedium = 16.0;
+  static const double spacingLarge = 24.0;
+  static const double spacingExtraLarge = 32.0;
+
+  // Aliases for brevity where needed
+  static const double spacingXS = spacingExtraSmall;
+  static const double spacingSM = spacingSmall;
+  static const double spacingMD = spacingMedium;
+  static const double spacingLG = spacingLarge;
+  static const double spacingXL = spacingExtraLarge;
 
   // Border Radii
-  static const double radiusSM = 8.0;
-  static const double radiusMD = 12.0;
-  static const double radiusLG = 16.0;
-  static const double radiusXL = 24.0;
-  static const double radiusFull = 999.0;
+  static const double radiusSmall = 8.0;
+  static const double radiusMedium = 12.0;
+  static const double radiusLarge = 16.0;
+  static const double radiusExtraLarge = 24.0;
+  static const double radiusFullCircular = 999.0;
+
+  static const double radiusSM = radiusSmall;
+  static const double radiusMD = radiusMedium;
+  static const double radiusLG = radiusLarge;
+  static const double radiusXL = radiusExtraLarge;
+  static const double radiusFull = radiusFullCircular;
 
   // Icon Sizes
-  static const double iconSM = 16.0;
-  static const double iconMD = 20.0;
-  static const double iconLG = 24.0;
-  static const double iconXL = 32.0;
+  static const double iconSmall = 16.0;
+  static const double iconMedium = 20.0;
+  static const double iconLarge = 24.0;
+  static const double iconExtraLarge = 32.0;
+
+  static const double iconSM = iconSmall;
+  static const double iconMD = iconMedium;
+  static const double iconLG = iconLarge;
+  static const double iconXL = iconExtraLarge;
 
   // Button Heights
-  static const double buttonHeightSM = 36.0;
-  static const double buttonHeightMD = 44.0;
-  static const double buttonHeightLG = 52.0;
+  static const double buttonHeightSmall = 36.0;
+  static const double buttonHeightMedium = 44.0;
+  static const double buttonHeightLarge = 52.0;
 
-  // Image Aspect Ratios / Sizes
-  static const double thumbnailSize = 72.0;
-  static const double cardImageAspectRatio = 1.1;
-  static const double sheetImageAspectRatio = 1.25;
+  static const double buttonHeightSM = buttonHeightSmall;
+  static const double buttonHeightMD = buttonHeightMedium;
+  static const double buttonHeightLG = buttonHeightLarge;
+
+  // Image Sizing and Aspect Ratios
+  static const double cartItemThumbnailSize = 72.0;
+  static const double thumbnailSize = cartItemThumbnailSize;
+  static const double productCardImageAspectRatio = 1.1;
+  static const double cardImageAspectRatio = productCardImageAspectRatio;
+  static const double productBottomSheetImageAspectRatio = 1.25;
+  static const double sheetImageAspectRatio =
+      productBottomSheetImageAspectRatio;
 }

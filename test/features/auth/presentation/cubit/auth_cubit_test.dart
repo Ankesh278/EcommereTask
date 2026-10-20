@@ -11,31 +11,35 @@ import 'package:ecommercetask/features/auth/presentation/cubit/auth_state.dart';
 class MockLoginUseCase extends Mock implements LoginUseCase {}
 
 void main() {
-  late AuthCubit cubit;
+  late AuthCubit authCubit;
   late MockLoginUseCase mockLoginUseCase;
 
   setUp(() {
     mockLoginUseCase = MockLoginUseCase();
-    cubit = AuthCubit(loginUseCase: mockLoginUseCase);
+    authCubit = AuthCubit(loginUseCase: mockLoginUseCase);
   });
 
   tearDown(() {
-    cubit.close();
+    authCubit.close();
   });
 
-  const tEmail = 'user@example.com';
-  const tPassword = 'password123';
-  const tUser = UserEntity(id: 'user_001', name: 'Alex Morgan', email: tEmail);
+  const sampleEmail = 'user@example.com';
+  const samplePassword = 'password123';
+  const sampleUser = UserEntity(
+    id: 'user_001',
+    name: 'Alex Morgan',
+    email: sampleEmail,
+  );
 
   test('initial state should be AuthInitial', () {
-    expect(cubit.state, const AuthInitial());
+    expect(authCubit.state, const AuthInitial());
   });
 
   group('Validation tests', () {
     blocTest<AuthCubit, AuthState>(
       'emits [AuthFailureState] when email is empty and prevents login use case execution',
-      build: () => cubit,
-      act: (cubit) => cubit.login(email: '', password: tPassword),
+      build: () => authCubit,
+      act: (cubit) => cubit.login(email: '', password: samplePassword),
       expect: () => [const AuthFailureState('Email is required')],
       verify: (_) {
         verifyZeroInteractions(mockLoginUseCase);
@@ -44,8 +48,9 @@ void main() {
 
     blocTest<AuthCubit, AuthState>(
       'emits [AuthFailureState] when email format is invalid',
-      build: () => cubit,
-      act: (cubit) => cubit.login(email: 'invalid-email', password: tPassword),
+      build: () => authCubit,
+      act: (cubit) =>
+          cubit.login(email: 'invalid-email', password: samplePassword),
       expect: () => [
         const AuthFailureState('Please enter a valid email address'),
       ],
@@ -56,8 +61,8 @@ void main() {
 
     blocTest<AuthCubit, AuthState>(
       'emits [AuthFailureState] when password is empty',
-      build: () => cubit,
-      act: (cubit) => cubit.login(email: tEmail, password: ''),
+      build: () => authCubit,
+      act: (cubit) => cubit.login(email: sampleEmail, password: ''),
       expect: () => [const AuthFailureState('Password is required')],
       verify: (_) {
         verifyZeroInteractions(mockLoginUseCase);
@@ -66,8 +71,8 @@ void main() {
 
     blocTest<AuthCubit, AuthState>(
       'emits [AuthFailureState] when password is shorter than 6 characters',
-      build: () => cubit,
-      act: (cubit) => cubit.login(email: tEmail, password: '123'),
+      build: () => authCubit,
+      act: (cubit) => cubit.login(email: sampleEmail, password: '123'),
       expect: () => [
         const AuthFailureState('Password must be at least 6 characters'),
       ],
@@ -82,15 +87,15 @@ void main() {
       'emits [AuthLoading, AuthSuccess] on valid credentials',
       build: () {
         when(
-          () => mockLoginUseCase(email: tEmail, password: tPassword),
-        ).thenAnswer((_) async => const Success(tUser));
-        return cubit;
+          () => mockLoginUseCase(email: sampleEmail, password: samplePassword),
+        ).thenAnswer((_) async => const Success(sampleUser));
+        return authCubit;
       },
-      act: (cubit) => cubit.login(email: tEmail, password: tPassword),
-      expect: () => [const AuthLoading(), const AuthSuccess(tUser)],
+      act: (cubit) => cubit.login(email: sampleEmail, password: samplePassword),
+      expect: () => [const AuthLoading(), const AuthSuccess(sampleUser)],
       verify: (_) {
         verify(
-          () => mockLoginUseCase(email: tEmail, password: tPassword),
+          () => mockLoginUseCase(email: sampleEmail, password: samplePassword),
         ).called(1);
       },
     );
@@ -99,29 +104,29 @@ void main() {
       'emits [AuthLoading, AuthFailureState] when usecase returns AuthFailure',
       build: () {
         when(
-          () => mockLoginUseCase(email: tEmail, password: tPassword),
+          () => mockLoginUseCase(email: sampleEmail, password: samplePassword),
         ).thenAnswer(
           (_) async => const Error(AuthFailure('Invalid email or password.')),
         );
-        return cubit;
+        return authCubit;
       },
-      act: (cubit) => cubit.login(email: tEmail, password: tPassword),
+      act: (cubit) => cubit.login(email: sampleEmail, password: samplePassword),
       expect: () => [
         const AuthLoading(),
         const AuthFailureState('Invalid email or password.'),
       ],
       verify: (_) {
         verify(
-          () => mockLoginUseCase(email: tEmail, password: tPassword),
+          () => mockLoginUseCase(email: sampleEmail, password: samplePassword),
         ).called(1);
       },
     );
 
     test('reset() emits AuthInitial', () {
-      cubit.emit(const AuthFailureState('Some error'));
-      expect(cubit.state, const AuthFailureState('Some error'));
-      cubit.reset();
-      expect(cubit.state, const AuthInitial());
+      authCubit.emit(const AuthFailureState('Some error'));
+      expect(authCubit.state, const AuthFailureState('Some error'));
+      authCubit.reset();
+      expect(authCubit.state, const AuthInitial());
     });
   });
 }

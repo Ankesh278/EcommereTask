@@ -81,7 +81,7 @@ class AppTextField extends StatelessWidget {
               ],
             ],
           ),
-          const SizedBox(height: AppDimensions.spacingSM),
+          const SizedBox(height: AppDimensions.spacingSmall),
         ],
         TextFormField(
           controller: controller,
@@ -106,7 +106,7 @@ class AppTextField extends StatelessWidget {
                     ? Icon(
                         prefixIcon,
                         color: AppColors.textSecondary,
-                        size: AppDimensions.iconMD,
+                        size: AppDimensions.iconMedium,
                       )
                     : null),
             suffixIcon: suffixIcon,

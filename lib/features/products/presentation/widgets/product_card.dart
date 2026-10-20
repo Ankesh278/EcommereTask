@@ -21,7 +21,7 @@ class ProductCard extends StatelessWidget {
     this.onTap,
   });
 
-  void _handleTap(BuildContext context) {
+  void _handleCardTap(BuildContext context) {
     if (onTap != null) {
       onTap!();
     } else {
@@ -34,7 +34,7 @@ class ProductCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
         border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
@@ -48,7 +48,7 @@ class ProductCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => _handleTap(context),
+          onTap: () => _handleCardTap(context),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -76,7 +76,7 @@ class ProductCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.85),
                           borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusSM,
+                            AppDimensions.radiusSmall,
                           ),
                         ),
                         child: Text(
@@ -102,7 +102,7 @@ class ProductCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.92),
                           borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusSM,
+                            AppDimensions.radiusSmall,
                           ),
                         ),
                         child: Row(

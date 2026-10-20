@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/widgets/app_confirmation_dialog.dart';
 import '../cubit/cart_cubit.dart';
 import '../cubit/cart_state.dart';
 import '../widgets/cart_item_card.dart';
@@ -10,34 +11,21 @@ import '../widgets/empty_cart_view.dart';
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
-  void _confirmClearCart(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Clear Shopping Cart?'),
-        content: const Text(
+  void _showClearCartConfirmationDialog(BuildContext context) {
+    AppConfirmationDialog.show(
+      context,
+      icon: Icons.delete_sweep_outlined,
+      title: 'Clear Shopping Cart?',
+      message:
           'Are you sure you want to remove all items from your shopping cart?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.error,
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(dialogContext);
-              context.read<CartCubit>().clearCart();
-            },
-            child: const Text('Clear All'),
-          ),
-        ],
-      ),
-    );
+      confirmText: 'Clear All',
+      cancelText: 'Cancel',
+      isDestructive: true,
+    ).then((isConfirmed) {
+      if (isConfirmed == true && context.mounted) {
+        context.read<CartCubit>().clearCart();
+      }
+    });
   }
 
   @override
@@ -46,15 +34,15 @@ class CartPage extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: BlocBuilder<CartCubit, CartState>(
-          builder: (context, state) {
+          builder: (context, cartState) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text('My Cart'),
-                if (state.isNotEmpty)
+                if (cartState.isNotEmpty)
                   Text(
-                    '${state.totalItemCount} ${state.totalItemCount == 1 ? 'item' : 'items'} (${state.distinctProductCount} unique)',
+                    '${cartState.totalItemCount} ${cartState.totalItemCount == 1 ? 'item' : 'items'} (${cartState.distinctProductCount} unique)',
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -67,10 +55,10 @@ class CartPage extends StatelessWidget {
         ),
         actions: [
           BlocBuilder<CartCubit, CartState>(
-            builder: (context, state) {
-              if (state.isEmpty) return const SizedBox.shrink();
+            builder: (context, cartState) {
+              if (cartState.isEmpty) return const SizedBox.shrink();
               return TextButton.icon(
-                onPressed: () => _confirmClearCart(context),
+                onPressed: () => _showClearCartConfirmationDialog(context),
                 icon: const Icon(
                   Icons.delete_sweep_outlined,
                   size: 18,
@@ -90,8 +78,8 @@ class CartPage extends StatelessWidget {
         ],
       ),
       body: BlocBuilder<CartCubit, CartState>(
-        builder: (context, state) {
-          if (state.isEmpty) {
+        builder: (context, cartState) {
+          if (cartState.isEmpty) {
             return const EmptyCartView();
           }
 
@@ -100,14 +88,14 @@ class CartPage extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 720),
               child: ListView.separated(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-                itemCount: state.items.length,
+                itemCount: cartState.items.length,
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 12),
                 itemBuilder: (context, index) {
-                  final item = state.items[index];
+                  final cartItem = cartState.items[index];
                   return CartItemCard(
-                    key: ValueKey('cart_item_${item.product.id}'),
-                    item: item,
+                    key: ValueKey('cart_item_${cartItem.product.id}'),
+                    item: cartItem,
                   );
                 },
               ),

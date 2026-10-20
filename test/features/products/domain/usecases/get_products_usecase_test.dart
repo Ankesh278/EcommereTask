@@ -9,15 +9,15 @@ import 'package:ecommercetask/features/products/domain/usecases/get_products_use
 class MockProductRepository extends Mock implements ProductRepository {}
 
 void main() {
-  late GetProductsUseCase useCase;
-  late MockProductRepository mockRepository;
+  late GetProductsUseCase getProductsUseCase;
+  late MockProductRepository mockProductRepository;
 
   setUp(() {
-    mockRepository = MockProductRepository();
-    useCase = GetProductsUseCase(mockRepository);
+    mockProductRepository = MockProductRepository();
+    getProductsUseCase = GetProductsUseCase(mockProductRepository);
   });
 
-  const tProduct = ProductEntity(
+  const sampleProduct = ProductEntity(
     id: 'prod_001',
     name: 'Denim Jacket',
     description: 'Classic denim jacket',
@@ -27,36 +27,42 @@ void main() {
     rating: 4.8,
   );
 
-  final tProductList = [tProduct];
+  final sampleProductList = [sampleProduct];
 
   test('should return list of products from the repository', () async {
     // Arrange
     when(
-      () => mockRepository.getProducts(),
-    ).thenAnswer((_) async => Success(tProductList));
+      () => mockProductRepository.getProducts(),
+    ).thenAnswer((_) async => Success(sampleProductList));
 
     // Act
-    final result = await useCase();
+    final loadResult = await getProductsUseCase();
 
     // Assert
-    expect(result, Success<List<ProductEntity>, Failure>(tProductList));
-    verify(() => mockRepository.getProducts()).called(1);
-    verifyNoMoreInteractions(mockRepository);
+    expect(
+      loadResult,
+      Success<List<ProductEntity>, Failure>(sampleProductList),
+    );
+    verify(() => mockProductRepository.getProducts()).called(1);
+    verifyNoMoreInteractions(mockProductRepository);
   });
 
   test('should return ProductFailure when repository call fails', () async {
     // Arrange
-    const tFailure = ProductFailure('Failed to fetch products');
+    const sampleFailure = ProductFailure('Failed to fetch products');
     when(
-      () => mockRepository.getProducts(),
-    ).thenAnswer((_) async => const Error(tFailure));
+      () => mockProductRepository.getProducts(),
+    ).thenAnswer((_) async => const Error(sampleFailure));
 
     // Act
-    final result = await useCase();
+    final loadResult = await getProductsUseCase();
 
     // Assert
-    expect(result, const Error<List<ProductEntity>, Failure>(tFailure));
-    verify(() => mockRepository.getProducts()).called(1);
-    verifyNoMoreInteractions(mockRepository);
+    expect(
+      loadResult,
+      const Error<List<ProductEntity>, Failure>(sampleFailure),
+    );
+    verify(() => mockProductRepository.getProducts()).called(1);
+    verifyNoMoreInteractions(mockProductRepository);
   });
 }

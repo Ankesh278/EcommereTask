@@ -235,21 +235,21 @@ class AppButton extends StatelessWidget {
   double _resolveHeight() {
     switch (size) {
       case AppButtonSize.small:
-        return AppDimensions.buttonHeightSM;
+        return AppDimensions.buttonHeightSmall;
       case AppButtonSize.medium:
-        return AppDimensions.buttonHeightMD;
+        return AppDimensions.buttonHeightMedium;
       case AppButtonSize.large:
-        return AppDimensions.buttonHeightLG;
+        return AppDimensions.buttonHeightLarge;
     }
   }
 
   double _resolveRadius() {
     switch (size) {
       case AppButtonSize.small:
-        return AppDimensions.radiusSM;
+        return AppDimensions.radiusSmall;
       case AppButtonSize.medium:
       case AppButtonSize.large:
-        return AppDimensions.radiusMD;
+        return AppDimensions.radiusMedium;
     }
   }
 

@@ -26,13 +26,13 @@ class _ProductListingPageState extends State<ProductListingPage> {
   @override
   void initState() {
     super.initState();
-    final cubit = context.read<ProductCubit>();
-    if (cubit.state is ProductInitial) {
-      cubit.loadProducts();
+    final productCubit = context.read<ProductCubit>();
+    if (productCubit.state is ProductInitial) {
+      productCubit.loadProducts();
     }
   }
 
-  void _confirmLogout() {
+  void _showLogoutConfirmationDialog() {
     LogoutConfirmationDialog.show(
       context,
       onConfirm: () {
@@ -90,30 +90,30 @@ class _ProductListingPageState extends State<ProductListingPage> {
           IconButton(
             icon: const Icon(Icons.logout_rounded),
             tooltip: 'Sign Out',
-            onPressed: _confirmLogout,
+            onPressed: _showLogoutConfirmationDialog,
           ),
           const SizedBox(width: 8),
         ],
       ),
       body: BlocBuilder<ProductCubit, ProductState>(
-        builder: (context, state) {
-          if (state is ProductLoading) {
+        builder: (context, productState) {
+          if (productState is ProductLoading) {
             return const AppLoadingIndicator(
               message: 'Loading fashion catalog...',
             );
           }
 
-          if (state is ProductError) {
+          if (productState is ProductError) {
             return AppErrorView(
-              message: state.message,
+              message: productState.message,
               onRetry: () => context.read<ProductCubit>().loadProducts(),
             );
           }
 
-          if (state is ProductLoaded) {
-            final products = state.products;
+          if (productState is ProductLoaded) {
+            final productList = productState.products;
 
-            if (products.isEmpty) {
+            if (productList.isEmpty) {
               return const Center(
                 child: Text('No products available at the moment.'),
               );
@@ -142,9 +142,9 @@ class _ProductListingPageState extends State<ProductListingPage> {
                       crossAxisSpacing: 14,
                       mainAxisSpacing: 14,
                     ),
-                    itemCount: products.length,
+                    itemCount: productList.length,
                     itemBuilder: (context, index) {
-                      final product = products[index];
+                      final product = productList[index];
                       return ProductCard(
                         key: ValueKey('product_${product.id}'),
                         product: product,
