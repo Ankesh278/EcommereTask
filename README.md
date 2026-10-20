@@ -1,16 +1,28 @@
 # ecommercetask
 
-A new Flutter project.
+A Flutter e-commerce application built with Clean Architecture and Cubit.
 
-## Getting Started
+## Instructions for Running the Application
 
-This project is a starting point for a Flutter application.
+### 1. Install Dependencies
+```bash
+flutter pub get
+```
 
-A few resources to get you started if this is your first Flutter project:
+### 2. Run the Application
+```bash
+flutter run
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 3. Run Tests
+```bash
+flutter test
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+### Demo Login Credentials
+- **Email**: `demo@example.com`
+- **Password**: `Demo@123` (or `password123`)
+
+*(An **Auto Fill** button is also available on the Login screen for quick testing)*
