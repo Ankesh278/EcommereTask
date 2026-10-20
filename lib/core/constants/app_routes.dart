@@ -1,5 +1,5 @@
-class AppRoutes {
-  static const String login = '/';
-  static const String products = '/products';
-  static const String cart = '/cart';
-}
+export '../routes/app_route_names.dart';
+import '../routes/app_route_names.dart';
+
+/// Legacy alias for AppRouteNames ensuring backwards compatibility across the project.
+typedef AppRoutes = AppRouteNames;

@@ -1,3 +1,5 @@
+import '../routes/app_route_names.dart';
+
 class AppConstants {
   static const String appTitle = 'AuraWear Fashion';
   static const String currencySymbol = '₹';
@@ -12,8 +14,8 @@ class AppConstants {
   static const String dummyPassword = 'password123';
   static const String dummyUserName = 'Alex Morgan';
 
-  // Named routes
-  static const String routeLogin = '/';
-  static const String routeProducts = '/products';
-  static const String routeCart = '/cart';
+  // Named routes linked to separated AppRouteNames
+  static const String routeLogin = AppRouteNames.login;
+  static const String routeProducts = AppRouteNames.products;
+  static const String routeCart = AppRouteNames.cart;
 }
