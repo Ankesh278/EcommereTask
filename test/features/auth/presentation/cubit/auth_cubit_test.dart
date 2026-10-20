@@ -25,11 +25,7 @@ void main() {
 
   const tEmail = 'user@example.com';
   const tPassword = 'password123';
-  const tUser = UserEntity(
-    id: 'user_001',
-    name: 'Alex Morgan',
-    email: tEmail,
-  );
+  const tUser = UserEntity(id: 'user_001', name: 'Alex Morgan', email: tEmail);
 
   test('initial state should be AuthInitial', () {
     expect(cubit.state, const AuthInitial());
@@ -40,9 +36,7 @@ void main() {
       'emits [AuthFailureState] when email is empty and prevents login use case execution',
       build: () => cubit,
       act: (cubit) => cubit.login(email: '', password: tPassword),
-      expect: () => [
-        const AuthFailureState('Email is required'),
-      ],
+      expect: () => [const AuthFailureState('Email is required')],
       verify: (_) {
         verifyZeroInteractions(mockLoginUseCase);
       },
@@ -64,9 +58,7 @@ void main() {
       'emits [AuthFailureState] when password is empty',
       build: () => cubit,
       act: (cubit) => cubit.login(email: tEmail, password: ''),
-      expect: () => [
-        const AuthFailureState('Password is required'),
-      ],
+      expect: () => [const AuthFailureState('Password is required')],
       verify: (_) {
         verifyZeroInteractions(mockLoginUseCase);
       },
@@ -95,13 +87,11 @@ void main() {
         return cubit;
       },
       act: (cubit) => cubit.login(email: tEmail, password: tPassword),
-      expect: () => [
-        const AuthLoading(),
-        const AuthSuccess(tUser),
-      ],
+      expect: () => [const AuthLoading(), const AuthSuccess(tUser)],
       verify: (_) {
-        verify(() => mockLoginUseCase(email: tEmail, password: tPassword))
-            .called(1);
+        verify(
+          () => mockLoginUseCase(email: tEmail, password: tPassword),
+        ).called(1);
       },
     );
 
@@ -121,8 +111,9 @@ void main() {
         const AuthFailureState('Invalid email or password.'),
       ],
       verify: (_) {
-        verify(() => mockLoginUseCase(email: tEmail, password: tPassword))
-            .called(1);
+        verify(
+          () => mockLoginUseCase(email: tEmail, password: tPassword),
+        ).called(1);
       },
     );
 

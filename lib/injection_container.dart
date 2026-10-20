@@ -22,14 +22,10 @@ Future<void> initDependencies() async {
   // Features - Auth
   // ----------------------------------------------------
   // Cubit (Factory: fresh instance when requested)
-  sl.registerFactory<AuthCubit>(
-    () => AuthCubit(loginUseCase: sl()),
-  );
+  sl.registerFactory<AuthCubit>(() => AuthCubit(loginUseCase: sl()));
 
   // Use Cases
-  sl.registerLazySingleton<LoginUseCase>(
-    () => LoginUseCase(sl()),
-  );
+  sl.registerLazySingleton<LoginUseCase>(() => LoginUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
@@ -50,9 +46,7 @@ Future<void> initDependencies() async {
   );
 
   // Use Cases
-  sl.registerLazySingleton<GetProductsUseCase>(
-    () => GetProductsUseCase(sl()),
-  );
+  sl.registerLazySingleton<GetProductsUseCase>(() => GetProductsUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<ProductRepository>(
@@ -75,7 +69,5 @@ Future<void> initDependencies() async {
   // CartCubit: MUST be a shared Singleton across all screens so that
   // cart contents, quantity modifications, and badge counts are
   // preserved seamlessly when navigating between screens.
-  sl.registerLazySingleton<CartCubit>(
-    () => CartCubit(),
-  );
+  sl.registerLazySingleton<CartCubit>(() => CartCubit());
 }

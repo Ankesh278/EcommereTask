@@ -24,12 +24,8 @@ class CartState extends Equatable {
 
   bool get isNotEmpty => items.isNotEmpty;
 
-  CartState copyWith({
-    List<CartItemEntity>? items,
-  }) {
-    return CartState(
-      items: items ?? this.items,
-    );
+  CartState copyWith({List<CartItemEntity>? items}) {
+    return CartState(items: items ?? this.items);
   }
 
   @override

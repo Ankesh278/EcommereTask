@@ -24,7 +24,9 @@ class AuthRepositoryImpl implements AuthRepository {
     } on AuthException catch (e) {
       return Error(AuthFailure(e.message));
     } catch (e) {
-      return Error(AuthFailure('An unexpected error occurred: ${e.toString()}'));
+      return Error(
+        AuthFailure('An unexpected error occurred: ${e.toString()}'),
+      );
     }
   }
 }

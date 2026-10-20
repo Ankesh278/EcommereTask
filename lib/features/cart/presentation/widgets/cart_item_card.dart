@@ -147,9 +147,9 @@ class CartItemCard extends StatelessWidget {
                               if (onDecrement != null) {
                                 onDecrement!();
                               } else {
-                                context
-                                    .read<CartCubit>()
-                                    .decreaseQuantity(product.id);
+                                context.read<CartCubit>().decreaseQuantity(
+                                  product.id,
+                                );
                               }
                             },
                           ),
@@ -173,9 +173,9 @@ class CartItemCard extends StatelessWidget {
                               if (onIncrement != null) {
                                 onIncrement!();
                               } else {
-                                context
-                                    .read<CartCubit>()
-                                    .increaseQuantity(product.id);
+                                context.read<CartCubit>().increaseQuantity(
+                                  product.id,
+                                );
                               }
                             },
                           ),

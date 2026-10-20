@@ -5,10 +5,14 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/error_view.dart';
 import '../../../../core/widgets/loading_indicator.dart';
+import '../../../../core/widgets/logout_confirmation_dialog.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../cart/presentation/cubit/cart_cubit.dart';
+import '../../../cart/presentation/cubit/cart_state.dart';
 import '../cubit/product_cubit.dart';
 import '../cubit/product_state.dart';
 import '../widgets/cart_badge_icon.dart';
+import '../widgets/floating_cart_button.dart';
 import '../widgets/product_card.dart';
 
 class ProductListingPage extends StatefulWidget {
@@ -29,30 +33,12 @@ class _ProductListingPageState extends State<ProductListingPage> {
   }
 
   void _confirmLogout() {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Log Out'),
-        content: const Text('Are you sure you want to sign out of your account?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.error,
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(dialogContext);
-              context.read<AuthCubit>().reset();
-              Navigator.pushReplacementNamed(context, AppConstants.routeLogin);
-            },
-            child: const Text('Log Out'),
-          ),
-        ],
-      ),
+    LogoutConfirmationDialog.show(
+      context,
+      onConfirm: () {
+        context.read<AuthCubit>().reset();
+        Navigator.pushReplacementNamed(context, AppConstants.routeLogin);
+      },
     );
   }
 
@@ -148,7 +134,8 @@ class _ProductListingPageState extends State<ProductListingPage> {
                     await context.read<ProductCubit>().loadProducts();
                   },
                   child: GridView.builder(
-                    padding: const EdgeInsets.all(16),
+                    // Ample bottom padding ensures floating cart button does not obscure last items
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
                       childAspectRatio: 0.68,
@@ -170,6 +157,32 @@ class _ProductListingPageState extends State<ProductListingPage> {
           }
 
           return const SizedBox.shrink();
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: BlocBuilder<CartCubit, CartState>(
+        builder: (context, cartState) {
+          final isCartNotEmpty = cartState.isNotEmpty;
+
+          return AnimatedSlide(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOutCubic,
+            offset: isCartNotEmpty ? Offset.zero : const Offset(0, 2),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+              opacity: isCartNotEmpty ? 1.0 : 0.0,
+              child: isCartNotEmpty
+                  ? FloatingCartButton(
+                      itemCount: cartState.totalItemCount,
+                      totalPrice: cartState.formattedTotalPrice,
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppConstants.routeCart);
+                      },
+                    )
+                  : const SizedBox.shrink(),
+            ),
+          );
         },
       ),
     );

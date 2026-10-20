@@ -28,9 +28,7 @@ class CustomButton extends StatelessWidget {
         foregroundColor: textColor ?? Colors.white,
         disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.6),
         disabledForegroundColor: Colors.white70,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: isLoading
           ? const SizedBox(

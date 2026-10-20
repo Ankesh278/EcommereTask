@@ -18,12 +18,8 @@ class EcommerceApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CartCubit>.value(
-          value: sl<CartCubit>(),
-        ),
-        BlocProvider<AuthCubit>(
-          create: (_) => sl<AuthCubit>(),
-        ),
+        BlocProvider<CartCubit>.value(value: sl<CartCubit>()),
+        BlocProvider<AuthCubit>(create: (_) => sl<AuthCubit>()),
         BlocProvider<ProductCubit>(
           create: (_) => sl<ProductCubit>()..loadProducts(),
         ),

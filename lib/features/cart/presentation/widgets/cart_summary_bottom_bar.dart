@@ -14,12 +14,14 @@ class CartSummaryBottomBar extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Row(
           children: [
-            Icon(Icons.info_outline_rounded, color: AppColors.accentDark, size: 26),
+            Icon(
+              Icons.info_outline_rounded,
+              color: AppColors.accentDark,
+              size: 26,
+            ),
             SizedBox(width: 10),
             Text('Checkout Notice'),
           ],
@@ -44,10 +46,16 @@ class CartSummaryBottomBar extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Distinct Products:', style: TextStyle(fontSize: 13)),
+                      const Text(
+                        'Distinct Products:',
+                        style: TextStyle(fontSize: 13),
+                      ),
                       Text(
                         '${state.distinctProductCount}',
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
                       ),
                     ],
                   ),
@@ -55,10 +63,16 @@ class CartSummaryBottomBar extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Total Items Quantity:', style: TextStyle(fontSize: 13)),
+                      const Text(
+                        'Total Items Quantity:',
+                        style: TextStyle(fontSize: 13),
+                      ),
                       Text(
                         '${state.totalItemCount}',
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
                       ),
                     ],
                   ),
@@ -66,7 +80,10 @@ class CartSummaryBottomBar extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Total Cart Amount:', style: TextStyle(fontWeight: FontWeight.w600)),
+                      const Text(
+                        'Total Cart Amount:',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
                       Text(
                         '${AppConstants.currencySymbol}${state.totalPrice.toInt()}',
                         style: const TextStyle(
@@ -146,16 +163,19 @@ class CartSummaryBottomBar extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 6),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Delivery', style: AppTextStyles.bodyMedium),
+                    const Text(
+                      'Cart Subtotal',
+                      style: AppTextStyles.bodyMedium,
+                    ),
                     Text(
-                      'FREE',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.success,
+                      '${AppConstants.currencySymbol}${state.totalPrice.toInt()}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                   ],

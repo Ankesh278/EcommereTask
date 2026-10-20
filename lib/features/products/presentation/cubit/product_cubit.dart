@@ -7,7 +7,7 @@ class ProductCubit extends Cubit<ProductState> {
   final GetProductsUseCase getProductsUseCase;
 
   ProductCubit({required this.getProductsUseCase})
-      : super(const ProductInitial());
+    : super(const ProductInitial());
 
   Future<void> loadProducts() async {
     emit(const ProductLoading());

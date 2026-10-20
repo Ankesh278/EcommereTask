@@ -22,9 +22,58 @@ void main() {
     rating: 4.8,
   );
 
-  testWidgets('ProductCard displays title, price, category, rating, and handles tap',
-      (WidgetTester tester) async {
-    bool tapped = false;
+  testWidgets(
+    'ProductCard displays title, price, category, rating, and handles tap',
+    (WidgetTester tester) async {
+      bool tapped = false;
+      final cartCubit = CartCubit();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: BlocProvider<CartCubit>.value(
+              value: cartCubit,
+              child: SizedBox(
+                height: 350,
+                width: 200,
+                child: ProductCard(
+                  product: tProduct,
+                  onAddToCart: () {
+                    tapped = true;
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pump();
+
+      // Verify UI items
+      expect(find.text('Heritage Denim Jacket'), findsOneWidget);
+      expect(find.text('₹${tProduct.price.toInt()}'), findsOneWidget);
+      expect(find.text('Outerwear'), findsOneWidget);
+      expect(find.text('4.8'), findsOneWidget);
+      expect(find.byIcon(Icons.star_rounded), findsOneWidget);
+
+      // Tap Add to Cart
+      final addButton = find.byKey(const Key('add_to_cart_prod_001'));
+      expect(addButton, findsOneWidget);
+      await tester.tap(addButton);
+      await tester.pump();
+
+      expect(tapped, isTrue);
+
+      cartCubit.close();
+    },
+  );
+
+  testWidgets('Tapping ProductCard body triggers onTap callback', (
+    WidgetTester tester,
+  ) async {
+    bool cardTapped = false;
+
     final cartCubit = CartCubit();
 
     await tester.pumpWidget(
@@ -37,9 +86,7 @@ void main() {
               width: 200,
               child: ProductCard(
                 product: tProduct,
-                onAddToCart: () {
-                  tapped = true;
-                },
+                onTap: () => cardTapped = true,
               ),
             ),
           ),
@@ -49,20 +96,11 @@ void main() {
 
     await tester.pump();
 
-    // Verify UI items
-    expect(find.text('Heritage Denim Jacket'), findsOneWidget);
-    expect(find.text('₹${tProduct.price.toInt()}'), findsOneWidget);
-    expect(find.text('Outerwear'), findsOneWidget);
-    expect(find.text('4.8'), findsOneWidget);
-    expect(find.byIcon(Icons.star_rounded), findsOneWidget);
-
-    // Tap Add to Cart
-    final addButton = find.byKey(const Key('add_to_cart_prod_001'));
-    expect(addButton, findsOneWidget);
-    await tester.tap(addButton);
+    // Tap on product title / card area
+    await tester.tap(find.text('Heritage Denim Jacket'));
     await tester.pump();
 
-    expect(tapped, isTrue);
+    expect(cardTapped, isTrue);
 
     cartCubit.close();
   });

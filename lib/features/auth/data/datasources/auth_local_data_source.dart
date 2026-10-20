@@ -3,10 +3,7 @@ import '../../../../core/errors/exceptions.dart';
 import '../models/user_model.dart';
 
 abstract class AuthLocalDataSource {
-  Future<UserModel> login({
-    required String email,
-    required String password,
-  });
+  Future<UserModel> login({required String email, required String password});
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
@@ -33,11 +30,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     // Check primary demo credentials (demo@example.com / Demo@123)
     if (normalizedEmail == primaryEmail.toLowerCase() &&
         password == primaryPassword) {
-      return UserModel(
-        id: 'user_demo',
-        name: primaryName,
-        email: email.trim(),
-      );
+      return UserModel(id: 'user_demo', name: primaryName, email: email.trim());
     }
 
     // Also support alternative dummy credentials (user@example.com / password123)

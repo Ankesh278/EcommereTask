@@ -21,13 +21,11 @@ void main() {
     rating: 4.8,
   );
 
-  const tCartItem = CartItemEntity(
-    product: tProduct,
-    quantity: 2,
-  );
+  const tCartItem = CartItemEntity(product: tProduct, quantity: 2);
 
-  testWidgets('CartItemCard renders details and triggers callbacks correctly',
-      (WidgetTester tester) async {
+  testWidgets('CartItemCard renders details and triggers callbacks correctly', (
+    WidgetTester tester,
+  ) async {
     bool incrementCalled = false;
     bool decrementCalled = false;
     bool removeCalled = false;

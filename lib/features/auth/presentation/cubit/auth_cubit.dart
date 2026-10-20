@@ -14,10 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
   String? validatePassword(String? password) =>
       InputValidators.validatePassword(password);
 
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     final emailError = validateEmail(email);
     if (emailError != null) {
       emit(AuthFailureState(emailError));

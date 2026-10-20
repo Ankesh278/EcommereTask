@@ -10,7 +10,9 @@ class CartCubit extends Cubit<CartState> {
   /// its quantity is incremented by 1, preventing duplicate entries.
   void addToCart(ProductEntity product) {
     final currentItems = List<CartItemEntity>.from(state.items);
-    final index = currentItems.indexWhere((item) => item.product.id == product.id);
+    final index = currentItems.indexWhere(
+      (item) => item.product.id == product.id,
+    );
 
     if (index >= 0) {
       final existingItem = currentItems[index];
@@ -27,7 +29,9 @@ class CartCubit extends Cubit<CartState> {
   /// Increments the quantity of an existing item in the cart.
   void increaseQuantity(String productId) {
     final currentItems = List<CartItemEntity>.from(state.items);
-    final index = currentItems.indexWhere((item) => item.product.id == productId);
+    final index = currentItems.indexWhere(
+      (item) => item.product.id == productId,
+    );
 
     if (index >= 0) {
       final existingItem = currentItems[index];
@@ -43,7 +47,9 @@ class CartCubit extends Cubit<CartState> {
   /// automatically removed from the cart as per design specification.
   void decreaseQuantity(String productId) {
     final currentItems = List<CartItemEntity>.from(state.items);
-    final index = currentItems.indexWhere((item) => item.product.id == productId);
+    final index = currentItems.indexWhere(
+      (item) => item.product.id == productId,
+    );
 
     if (index >= 0) {
       final existingItem = currentItems[index];

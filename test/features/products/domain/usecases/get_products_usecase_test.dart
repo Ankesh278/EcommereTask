@@ -31,8 +31,9 @@ void main() {
 
   test('should return list of products from the repository', () async {
     // Arrange
-    when(() => mockRepository.getProducts())
-        .thenAnswer((_) async => Success(tProductList));
+    when(
+      () => mockRepository.getProducts(),
+    ).thenAnswer((_) async => Success(tProductList));
 
     // Act
     final result = await useCase();
@@ -46,8 +47,9 @@ void main() {
   test('should return ProductFailure when repository call fails', () async {
     // Arrange
     const tFailure = ProductFailure('Failed to fetch products');
-    when(() => mockRepository.getProducts())
-        .thenAnswer((_) async => const Error(tFailure));
+    when(
+      () => mockRepository.getProducts(),
+    ).thenAnswer((_) async => const Error(tFailure));
 
     // Act
     final result = await useCase();

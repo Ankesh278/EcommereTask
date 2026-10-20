@@ -23,11 +23,7 @@ class AppErrorView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 56,
-              color: AppColors.error,
-            ),
+            Icon(icon, size: 56, color: AppColors.error),
             const SizedBox(height: 16),
             Text(
               'Oops! Something went wrong',

@@ -60,9 +60,9 @@ class _LoginFormState extends State<LoginForm> {
     if (_isFormValid && (_formKey.currentState?.validate() ?? false)) {
       FocusScope.of(context).unfocus();
       context.read<AuthCubit>().login(
-            email: _emailController.text.trim(),
-            password: _passwordController.text,
-          );
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
     }
   }
 
@@ -137,11 +137,13 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 24),
           // Demo Credentials Helper Card
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
-              color: AppColors.surfaceVariant,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.border),
+              color: AppColors.surfaceVariant.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: AppColors.border.withValues(alpha: 0.8),
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,17 +152,17 @@ class _LoginFormState extends State<LoginForm> {
                   children: [
                     const Icon(
                       Icons.info_outline,
-                      size: 18,
-                      color: AppColors.accentDark,
+                      size: 15,
+                      color: AppColors.textMuted,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 6),
                     const Expanded(
                       child: Text(
                         'Demo Credentials',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                          color: AppColors.textPrimary,
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ),
@@ -168,7 +170,7 @@ class _LoginFormState extends State<LoginForm> {
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
-                          vertical: 4,
+                          vertical: 2,
                         ),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -177,7 +179,7 @@ class _LoginFormState extends State<LoginForm> {
                       child: const Text(
                         'Auto Fill',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.w700,
                           color: AppColors.accentDark,
                         ),
@@ -185,13 +187,13 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 4),
                 const Text(
                   'Email: ${AppConstants.demoEmail}\nPassword: ${AppConstants.demoPassword}',
                   style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
-                    height: 1.4,
+                    fontSize: 11,
+                    color: AppColors.textMuted,
+                    height: 1.35,
                     fontFamily: 'monospace',
                   ),
                 ),

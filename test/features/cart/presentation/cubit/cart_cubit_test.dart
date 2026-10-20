@@ -37,14 +37,17 @@ void main() {
   );
 
   group('CartCubit initialization and empty state', () {
-    test('initial state has empty items list, 0 total count, and 0.0 total price', () {
-      expect(cartCubit.state, const CartState());
-      expect(cartCubit.state.items, isEmpty);
-      expect(cartCubit.state.totalItemCount, 0);
-      expect(cartCubit.state.totalPrice, 0.0);
-      expect(cartCubit.state.isEmpty, isTrue);
-      expect(cartCubit.state.isNotEmpty, isFalse);
-    });
+    test(
+      'initial state has empty items list, 0 total count, and 0.0 total price',
+      () {
+        expect(cartCubit.state, const CartState());
+        expect(cartCubit.state.items, isEmpty);
+        expect(cartCubit.state.totalItemCount, 0);
+        expect(cartCubit.state.totalPrice, 0.0);
+        expect(cartCubit.state.isEmpty, isTrue);
+        expect(cartCubit.state.isNotEmpty, isFalse);
+      },
+    );
   });
 
   group('Cart operations: add to cart', () {
@@ -54,9 +57,7 @@ void main() {
       act: (cubit) => cubit.addToCart(tProductA),
       expect: () => [
         const CartState(
-          items: [
-            CartItemEntity(product: tProductA, quantity: 1),
-          ],
+          items: [CartItemEntity(product: tProductA, quantity: 1)],
         ),
       ],
       verify: (cubit) {
@@ -75,14 +76,10 @@ void main() {
       },
       expect: () => [
         const CartState(
-          items: [
-            CartItemEntity(product: tProductA, quantity: 1),
-          ],
+          items: [CartItemEntity(product: tProductA, quantity: 1)],
         ),
         const CartState(
-          items: [
-            CartItemEntity(product: tProductA, quantity: 2),
-          ],
+          items: [CartItemEntity(product: tProductA, quantity: 2)],
         ),
       ],
       verify: (cubit) {
@@ -103,9 +100,7 @@ void main() {
       },
       expect: () => [
         const CartState(
-          items: [
-            CartItemEntity(product: tProductA, quantity: 1),
-          ],
+          items: [CartItemEntity(product: tProductA, quantity: 1)],
         ),
         const CartState(
           items: [
@@ -127,16 +122,12 @@ void main() {
       'increaseQuantity increments item quantity and updates total price',
       build: () => cartCubit,
       seed: () => const CartState(
-        items: [
-          CartItemEntity(product: tProductA, quantity: 1),
-        ],
+        items: [CartItemEntity(product: tProductA, quantity: 1)],
       ),
       act: (cubit) => cubit.increaseQuantity(tProductA.id),
       expect: () => [
         const CartState(
-          items: [
-            CartItemEntity(product: tProductA, quantity: 2),
-          ],
+          items: [CartItemEntity(product: tProductA, quantity: 2)],
         ),
       ],
       verify: (cubit) {
@@ -149,16 +140,12 @@ void main() {
       'decreaseQuantity decrements quantity when quantity > 1',
       build: () => cartCubit,
       seed: () => const CartState(
-        items: [
-          CartItemEntity(product: tProductA, quantity: 3),
-        ],
+        items: [CartItemEntity(product: tProductA, quantity: 3)],
       ),
       act: (cubit) => cubit.decreaseQuantity(tProductA.id),
       expect: () => [
         const CartState(
-          items: [
-            CartItemEntity(product: tProductA, quantity: 2),
-          ],
+          items: [CartItemEntity(product: tProductA, quantity: 2)],
         ),
       ],
       verify: (cubit) {
@@ -171,14 +158,10 @@ void main() {
       'decreaseQuantity automatically removes item when quantity reaches zero (from 1)',
       build: () => cartCubit,
       seed: () => const CartState(
-        items: [
-          CartItemEntity(product: tProductA, quantity: 1),
-        ],
+        items: [CartItemEntity(product: tProductA, quantity: 1)],
       ),
       act: (cubit) => cubit.decreaseQuantity(tProductA.id),
-      expect: () => [
-        const CartState(items: []),
-      ],
+      expect: () => [const CartState(items: [])],
       verify: (cubit) {
         expect(cubit.state.items, isEmpty);
         expect(cubit.state.totalItemCount, 0);
@@ -201,9 +184,7 @@ void main() {
       act: (cubit) => cubit.removeFromCart(tProductA.id),
       expect: () => [
         const CartState(
-          items: [
-            CartItemEntity(product: tProductB, quantity: 2),
-          ],
+          items: [CartItemEntity(product: tProductB, quantity: 2)],
         ),
       ],
       verify: (cubit) {
@@ -223,9 +204,7 @@ void main() {
         ],
       ),
       act: (cubit) => cubit.clearCart(),
-      expect: () => [
-        const CartState(items: []),
-      ],
+      expect: () => [const CartState(items: [])],
       verify: (cubit) {
         expect(cubit.state.isEmpty, isTrue);
         expect(cubit.state.totalItemCount, 0);
@@ -236,9 +215,7 @@ void main() {
     test('getProductQuantity returns accurate count or 0 if absent', () {
       cartCubit.emit(
         const CartState(
-          items: [
-            CartItemEntity(product: tProductA, quantity: 3),
-          ],
+          items: [CartItemEntity(product: tProductA, quantity: 3)],
         ),
       );
 
@@ -246,21 +223,24 @@ void main() {
       expect(cartCubit.getProductQuantity('non_existent_id'), 0);
     });
 
-    test('distinctProductCount and totalItemCount are clearly distinguished', () {
-      cartCubit.emit(
-        const CartState(
-          items: [
-            CartItemEntity(product: tProductA, quantity: 3),
-            CartItemEntity(product: tProductB, quantity: 2),
-          ],
-        ),
-      );
+    test(
+      'distinctProductCount and totalItemCount are clearly distinguished',
+      () {
+        cartCubit.emit(
+          const CartState(
+            items: [
+              CartItemEntity(product: tProductA, quantity: 3),
+              CartItemEntity(product: tProductB, quantity: 2),
+            ],
+          ),
+        );
 
-      expect(cartCubit.state.distinctProductCount, 2);
-      expect(cartCubit.state.totalItemCount, 5);
-      expect(cartCubit.state.totalPrice, (80.0 * 3) + (30.0 * 2));
-      expect(cartCubit.state.formattedTotalPrice, '₹300');
-    });
+        expect(cartCubit.state.distinctProductCount, 2);
+        expect(cartCubit.state.totalItemCount, 5);
+        expect(cartCubit.state.totalPrice, (80.0 * 3) + (30.0 * 2));
+        expect(cartCubit.state.formattedTotalPrice, '₹300');
+      },
+    );
 
     test('state is immutable and collections are not mutated in place', () {
       final initialList = [

@@ -106,15 +106,17 @@ Configured in `AppConstants`:
 ### 1. Login Screen (`LoginPage`)
 - Application brand mark with shopping bag badge.
 - App name ("AuraWear Fashion") and welcoming subtitle.
+- Balanced outer padding giving email/password fields and Login button full usable width on mobile.
 - Email input field with trimming and regex format validation.
 - Password input field (hidden by default) with working eye icon visibility toggle (preserves value).
 - **Dynamic Submit Button**: Disabled until both fields contain valid input; updates enabled state as user types.
+- **Subtle Demo Credentials Section**: Compact, non-intrusive container with secondary styling and a 1-tap "Auto Fill" button.
 - Animated loading indicator on button during authentication.
 - Navigation to Product Listing screen upon successful authentication via `BlocListener`.
 - Error snackbar feedback for invalid credentials.
 
 ### 2. Product Listing Screen (`ProductListingPage`)
-- Header with branding, "Exclusive Collection" badge, logout icon button with confirmation dialog, and cart badge icon.
+- Header with branding, "Exclusive Collection" badge, live cart badge, and polished logout action.
 - Displays **8 realistic static clothing products** formatted with **INR (`₹`)** currency:
   1. **Classic Cotton T-Shirt** — ₹799
   2. **Oversized Graphic T-Shirt** — ₹999
@@ -125,22 +127,32 @@ Configured in `AppConstants`:
   7. **Sports Sneakers** — ₹2,999
   8. **Everyday Backpack** — ₹1,499
 - Reusable `ProductCard` with image loading fallback, category badge, rating star, and price.
-- Dynamic "Add to Cart" button with quantity indicator `(Qty)`.
-- Live cart item-count badge on the AppBar that updates immediately across all screens.
-- Pull-to-refresh and logout confirmation dialog.
+- **Reusable Product Details Bottom Sheet (`ProductDetailsBottomSheet`)**:
+  - Tapping a product card opens a modal bottom sheet with drag handle, close affordance, large image, category, rating, full description, price, and fixed Add to Cart CTA.
+  - Adding from the sheet updates the cart immediately and preserves synchronized state.
+- **Direct Card Add to Cart**: Tapping "Add" on a card adds directly to the cart without opening the bottom sheet.
+- **Contextual Floating Cart Button (`FloatingCartButton`)**:
+  - Automatically animates into view when the cart contains $\ge 1$ item.
+  - Hides smoothly when the cart is emptied.
+  - Displays live item count, total price, and navigates directly to the Cart Screen.
+  - Padded list viewport ensures the last product is never obstructed by the floating CTA.
+- **Polished Logout Confirmation Dialog (`LogoutConfirmationDialog`)**:
+  - Native confirmation dialog with styled logout icon, clear confirmation copy, and balanced Cancel/Log Out actions.
 
 ### 3. Shopping Cart Screen (`CartPage`)
-- Lists all items added to cart with thumbnails, unit prices, and line subtotals (`Product price × quantity`).
+- Header with live item count subtitle and "Clear" action.
+- Lists all items added to cart using refined `CartItemCard` with thumbnails, unit prices, quantity controls, line subtotals (`Product price × quantity`), and trash action.
 - **Quantity Controls**: `+` (increment) and `-` (decrement).
 - **Auto-Removal**: Decrementing an item at quantity 1 automatically removes it from the cart.
 - **Direct Removal**: Trash button removes item completely.
 - **Duplicate Prevention**: Adding an already existing item increases its quantity instead of adding a duplicate row.
-- **Distinguished Calculations**:
+- **Derived Order Summary Bar**:
   - Distinct Products Count (`distinctProductCount`)
   - Total Items Quantity (`totalItemCount`)
   - Grand Total Cart Amount in INR integer arithmetic (`₹${totalPrice.toInt()}`)
+  - No artificial charges; all figures honestly derived from cart state.
 - **Empty Cart State (`EmptyCartView`)**: Clean illustration with a "Continue Shopping" button that returns to the Product Listing screen.
-- **Checkout Dialog**: Informs the user that checkout is not implemented in this demo, with options to keep shopping or reset the cart.
+- **Checkout Dialog**: Honest placeholder informing the user that checkout is not implemented in this demo.
 
 ---
 

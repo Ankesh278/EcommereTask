@@ -7,14 +7,14 @@ sealed class Result<S, F> extends Equatable {
   bool get isError => this is Error<S, F>;
 
   S? get dataOrNull => switch (this) {
-        Success(:final data) => data,
-        Error() => null,
-      };
+    Success(:final data) => data,
+    Error() => null,
+  };
 
   F? get errorOrNull => switch (this) {
-        Success() => null,
-        Error(:final failure) => failure,
-      };
+    Success() => null,
+    Error(:final failure) => failure,
+  };
 
   R fold<R>(R Function(F failure) onError, R Function(S data) onSuccess) {
     return switch (this) {

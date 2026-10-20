@@ -43,15 +43,13 @@ void main() {
   blocTest<ProductCubit, ProductState>(
     'emits [ProductLoading, ProductLoaded] when loadProducts succeeds with >= 5 products',
     build: () {
-      when(() => mockGetProductsUseCase())
-          .thenAnswer((_) async => Success(tProducts));
+      when(
+        () => mockGetProductsUseCase(),
+      ).thenAnswer((_) async => Success(tProducts));
       return cubit;
     },
     act: (cubit) => cubit.loadProducts(),
-    expect: () => [
-      const ProductLoading(),
-      ProductLoaded(tProducts),
-    ],
+    expect: () => [const ProductLoading(), ProductLoaded(tProducts)],
     verify: (_) {
       verify(() => mockGetProductsUseCase()).called(1);
       expect(tProducts.length, greaterThanOrEqualTo(5));

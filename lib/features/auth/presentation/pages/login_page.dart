@@ -21,10 +21,7 @@ class LoginPage extends StatelessWidget {
               context,
               'Welcome back, ${state.user.name}!',
             );
-            Navigator.pushReplacementNamed(
-              context,
-              AppConstants.routeProducts,
-            );
+            Navigator.pushReplacementNamed(context, AppConstants.routeProducts);
           } else if (state is AuthFailureState) {
             AppSnackBar.showError(context, state.errorMessage);
           }
@@ -32,7 +29,7 @@ class LoginPage extends StatelessWidget {
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 420),
                 child: Column(
@@ -84,7 +81,10 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 32),
                     // Login Card Form
                     Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 24,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                         borderRadius: BorderRadius.circular(20),

@@ -33,9 +33,7 @@ class AppButton extends StatelessWidget {
         disabledForegroundColor: Colors.white60,
         elevation: 0,
         minimumSize: const Size.fromHeight(50),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: isLoading
           ? const SizedBox(
@@ -57,7 +55,9 @@ class AppButton extends StatelessWidget {
                 Text(
                   text,
                   style: AppTextStyles.buttonText.copyWith(
-                    color: textColor ?? (isEnabled ? Colors.white : Colors.white70),
+                    color:
+                        textColor ??
+                        (isEnabled ? Colors.white : Colors.white70),
                   ),
                 ),
               ],

@@ -14,7 +14,8 @@ class CartPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Clear Cart'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Clear Shopping Cart?'),
         content: const Text(
           'Are you sure you want to remove all items from your shopping cart?',
         ),
@@ -44,7 +45,26 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('My Cart'),
+        title: BlocBuilder<CartCubit, CartState>(
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('My Cart'),
+                if (state.isNotEmpty)
+                  Text(
+                    '${state.totalItemCount} ${state.totalItemCount == 1 ? 'item' : 'items'} (${state.distinctProductCount} unique)',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
         actions: [
           BlocBuilder<CartCubit, CartState>(
             builder: (context, state) {
@@ -81,7 +101,8 @@ class CartPage extends StatelessWidget {
               child: ListView.separated(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
                 itemCount: state.items.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final item = state.items[index];
                   return CartItemCard(
