@@ -209,18 +209,20 @@ class AppButton extends StatelessWidget {
     final double iconSize = size == AppButtonSize.small ? 14.0 : 18.0;
     final TextStyle textStyle = _resolveTextStyle(isEnabled);
 
+    final Color foregroundColor = _resolveForegroundColor(isEnabled);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         if (icon != null) ...[
-          Icon(icon, size: iconSize),
+          Icon(icon, size: iconSize, color: foregroundColor),
           SizedBox(width: size == AppButtonSize.small ? 4 : 8),
         ],
         Text(text, style: textStyle),
         if (suffixIcon != null) ...[
           SizedBox(width: size == AppButtonSize.small ? 4 : 8),
-          Icon(suffixIcon, size: iconSize),
+          Icon(suffixIcon, size: iconSize, color: foregroundColor),
         ],
       ],
     );
@@ -266,8 +268,23 @@ class AppButton extends StatelessWidget {
 
   Color _resolveForegroundColor(bool isEnabled) {
     if (textColor != null) return textColor!;
-    if (!isEnabled) return Colors.white70;
-    return Colors.white;
+    if (!isEnabled) {
+      if (variant == AppButtonVariant.outlined ||
+          variant == AppButtonVariant.text) {
+        return AppColors.textMuted;
+      }
+      return Colors.white70;
+    }
+    switch (variant) {
+      case AppButtonVariant.primary:
+      case AppButtonVariant.danger:
+        return Colors.white;
+      case AppButtonVariant.secondary:
+      case AppButtonVariant.outlined:
+        return AppColors.textPrimary;
+      case AppButtonVariant.text:
+        return AppColors.accentDark;
+    }
   }
 
   Color _resolveSpinnerColor() {
