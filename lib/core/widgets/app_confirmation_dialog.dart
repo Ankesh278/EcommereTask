@@ -3,8 +3,6 @@ import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
 import 'app_button.dart';
 
-/// A reusable confirmation modal dialog adhering to SOLID principles.
-/// Used for destructive actions (logout, remove from cart, clear cart).
 class AppConfirmationDialog extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -27,7 +25,6 @@ class AppConfirmationDialog extends StatelessWidget {
     this.isDestructive = false,
   });
 
-  /// Static helper to show the confirmation dialog
   static Future<bool?> show(
     BuildContext context, {
     required IconData icon,
@@ -65,7 +62,7 @@ class AppConfirmationDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Icon Header
+            //Header
             Container(
               width: 56,
               height: 56,
@@ -94,7 +91,7 @@ class AppConfirmationDialog extends StatelessWidget {
             ),
             const SizedBox(height: AppDimensions.spacingSmall),
 
-            // Message
+            // message
             Text(
               message,
               textAlign: TextAlign.center,
@@ -106,7 +103,6 @@ class AppConfirmationDialog extends StatelessWidget {
             ),
             const SizedBox(height: AppDimensions.spacingLarge),
 
-            // Action Buttons
             Row(
               children: [
                 Expanded(

@@ -8,16 +8,7 @@ import '../../../cart/presentation/cubit/cart_cubit.dart';
 import '../../../cart/presentation/cubit/cart_state.dart';
 import '../../domain/entities/product_entity.dart';
 
-enum AddToCartButtonVariant {
-  /// Compact button with icon + count/text, designed for ProductCard grid view
-  compact,
-
-  /// Full-width primary CTA button, designed for bottom sheets and detail views
-  expanded,
-}
-
-/// A dedicated, reusable Add to Cart button adhering to SOLID principles.
-/// Encapsulates cart state observation, quantity badges, and cart dispatching.
+enum AddToCartButtonVariant { compact, expanded,}
 class AddToCartButton extends StatelessWidget {
   final ProductEntity product;
   final AddToCartButtonVariant variant;
@@ -34,7 +25,6 @@ class AddToCartButton extends StatelessWidget {
     this.buttonKey,
   });
 
-  /// Factory constructor for the compact button variant (used in ProductCard)
   factory AddToCartButton.compact({
     Key? key,
     required ProductEntity product,
@@ -49,8 +39,6 @@ class AddToCartButton extends StatelessWidget {
       buttonKey: key ?? Key('add_to_cart_${product.id}'),
     );
   }
-
-  /// Factory constructor for the expanded full-width CTA (used in BottomSheet)
   factory AddToCartButton.expanded({
     Key? key,
     required ProductEntity product,
@@ -96,7 +84,6 @@ class AddToCartButton extends StatelessWidget {
           );
         }
 
-        // Compact variant for ProductCard
         return ElevatedButton(
           key: buttonKey ?? key ?? Key('add_to_cart_${product.id}'),
           onPressed: () => _handleAddToCartClick(context),

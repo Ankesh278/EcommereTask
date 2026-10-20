@@ -6,8 +6,6 @@ import '../../features/cart/presentation/cubit/cart_cubit.dart';
 import '../../features/products/presentation/cubit/product_cubit.dart';
 import '../../injection_container.dart';
 
-/// Centralized Application BLoC / Cubit providers widget.
-/// Completely separates dependency injection and state management wiring from the app widget tree.
 class AppProviders extends StatelessWidget {
   final Widget child;
 

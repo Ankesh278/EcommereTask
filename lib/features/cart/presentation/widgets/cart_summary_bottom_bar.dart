@@ -111,7 +111,7 @@ class CartSummaryBottomBar extends StatelessWidget {
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<CartCubit>().clearCart();
-              Navigator.pop(context); // Go back to products
+              Navigator.pop(context);
             },
             child: const Text('Clear & Reset Cart'),
           ),
@@ -145,7 +145,6 @@ class CartSummaryBottomBar extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Distinct products & total quantity rows
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

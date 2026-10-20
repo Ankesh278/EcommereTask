@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 
-/// A reusable quantity increment/decrement selector widget.
-/// Encapsulates count presentation and step interactions.
 class QuantitySelector extends StatelessWidget {
   final int quantity;
   final VoidCallback onIncrement;
@@ -31,7 +29,7 @@ class QuantitySelector extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Decrement / Delete Button
+          //decrease button
           _QuantitySelectorButton(
             key: productId != null ? Key('decrement_$productId') : null,
             icon: isQuantityAtMinimum ? Icons.delete_outline : Icons.remove,
@@ -42,7 +40,7 @@ class QuantitySelector extends StatelessWidget {
             onPressed: onDecrement,
           ),
 
-          // Quantity Count Display
+          //quantity
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
@@ -56,7 +54,7 @@ class QuantitySelector extends StatelessWidget {
             ),
           ),
 
-          // Increment Button
+          //increment button
           _QuantitySelectorButton(
             key: productId != null ? Key('increment_$productId') : null,
             icon: Icons.add,

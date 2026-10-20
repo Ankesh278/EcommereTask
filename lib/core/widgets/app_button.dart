@@ -7,9 +7,6 @@ enum AppButtonVariant { primary, secondary, outlined, text, danger }
 
 enum AppButtonSize { small, medium, large }
 
-/// A highly reusable, customizable button component adhering to SOLID principles.
-/// Supports variants (primary, secondary, outlined, text, danger), sizing,
-/// loading states, icons, and custom overrides while adhering to the app theme.
 class AppButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -38,7 +35,6 @@ class AppButton extends StatelessWidget {
     this.borderRadius,
   });
 
-  /// Factory constructor for a compact/small button (e.g. for cards or inline actions)
   factory AppButton.compact({
     Key? key,
     required String text,
@@ -63,7 +59,6 @@ class AppButton extends StatelessWidget {
     );
   }
 
-  /// Factory constructor for an outlined button
   factory AppButton.outlined({
     Key? key,
     required String text,
@@ -87,7 +82,6 @@ class AppButton extends StatelessWidget {
     );
   }
 
-  /// Factory constructor for a destructive action button
   factory AppButton.danger({
     Key? key,
     required String text,

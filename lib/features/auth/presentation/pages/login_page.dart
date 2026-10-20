@@ -36,7 +36,6 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Brand Icon & Header
                     Center(
                       child: Container(
                         padding: const EdgeInsets.all(16),
@@ -79,7 +78,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 32),
-                    // Login Card Form
+                    // Login Card
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 18,

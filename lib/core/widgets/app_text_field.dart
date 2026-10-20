@@ -3,9 +3,6 @@ import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
 import '../theme/app_text_styles.dart';
 
-/// A reusable, robust Form Text Field component adhering to SOLID principles.
-/// Encapsulates consistent styling, label headers, prefix/suffix icons,
-/// and form validation according to design standards.
 class AppTextField extends StatelessWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;

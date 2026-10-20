@@ -1,6 +1,5 @@
 import '../entities/cart_item_entity.dart';
 
-/// Pure domain use case for calculating total price and total quantities from a list of cart items.
 class CalculateCartTotalUseCase {
   const CalculateCartTotalUseCase();
 

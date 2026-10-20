@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
 
-/// A reusable network image widget that encapsulates rounded clipping,
-/// aspect ratio, loading state, and error handling for e-commerce products.
 class ProductNetworkImage extends StatelessWidget {
   final String imageUrl;
   final double? width;

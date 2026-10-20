@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-/// Represents a result of an operation that can either be a Success or an Error.
-/// Adheres to Clean Architecture functional error-handling.
 sealed class Result<SuccessData, FailureData> extends Equatable {
   const Result();
 

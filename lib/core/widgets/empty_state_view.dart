@@ -3,9 +3,6 @@ import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
 import '../theme/app_text_styles.dart';
 import 'app_button.dart';
-
-/// A reusable empty state view adhering to SOLID principles.
-/// Displays an illustration icon, title, description, and optional action CTA.
 class EmptyStateView extends StatelessWidget {
   final IconData icon;
   final String title;

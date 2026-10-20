@@ -37,7 +37,6 @@ class FloatingCartButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Cart icon with count indicator
               Stack(
                 clipBehavior: Clip.none,
                 children: [

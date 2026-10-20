@@ -9,14 +9,10 @@ import '../../../cart/presentation/cubit/cart_cubit.dart';
 import '../../domain/entities/product_entity.dart';
 import 'add_to_cart_button.dart';
 
-/// Reusable Product Details Modal Bottom Sheet adhering to SOLID principles.
-/// Composes reusable ProductNetworkImage, PriceText, and AddToCartButton components.
 class ProductDetailsBottomSheet extends StatelessWidget {
   final ProductEntity product;
 
   const ProductDetailsBottomSheet({super.key, required this.product});
-
-  /// Static helper to display the modal bottom sheet
   static Future<void> show(BuildContext context, ProductEntity product) {
     return showModalBottomSheet<void>(
       context: context,
@@ -47,13 +43,12 @@ class ProductDetailsBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Drag handle and close affordance
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 12, 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 40), // Balance close button
+                const SizedBox(width: 40),
                 Container(
                   width: 40,
                   height: 4,
@@ -75,14 +70,12 @@ class ProductDetailsBottomSheet extends StatelessWidget {
             ),
           ),
 
-          // Scrollable Body Content
           Flexible(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Reusable Large Product Image
                   ProductNetworkImage(
                     imageUrl: product.imageUrl,
                     aspectRatio:
@@ -93,8 +86,6 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                     placeholderCategory: product.category,
                   ),
                   const SizedBox(height: 16),
-
-                  // Category & Rating Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -149,22 +140,16 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-
-                  // Product Name
                   Text(
                     product.name,
                     style: AppTextStyles.headingLarge.copyWith(fontSize: 22),
                   ),
                   const SizedBox(height: 8),
-
-                  // Price using reusable PriceText
                   PriceText.large(price: product.price),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Divider(color: AppColors.border),
                   ),
-
-                  // Description Overview
                   const Text(
                     'Product Overview',
                     style: TextStyle(
@@ -188,7 +173,6 @@ class ProductDetailsBottomSheet extends StatelessWidget {
             ),
           ),
 
-          // Fixed Bottom Action Bar with Reusable AddToCartButton
           Container(
             padding: EdgeInsets.fromLTRB(
               20,

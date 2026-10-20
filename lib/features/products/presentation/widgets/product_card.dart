@@ -7,8 +7,6 @@ import '../../domain/entities/product_entity.dart';
 import 'add_to_cart_button.dart';
 import 'product_details_bottom_sheet.dart';
 
-/// Product Card component adhering to SOLID principles.
-/// Composes reusable ProductNetworkImage, PriceText, and AddToCartButton widgets.
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
   final VoidCallback? onAddToCart;
@@ -52,7 +50,6 @@ class ProductCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Product Image Header with category & rating overlays
               Expanded(
                 flex: 6,
                 child: Stack(
@@ -64,7 +61,6 @@ class ProductCard extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
 
-                    // Category Pill Badge
                     Positioned(
                       top: 8,
                       left: 8,
@@ -89,8 +85,6 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    // Rating Badge
                     Positioned(
                       top: 8,
                       right: 8,
@@ -130,7 +124,7 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
 
-              // Product Details Section
+              //product details
               Expanded(
                 flex: 5,
                 child: Padding(
@@ -168,13 +162,10 @@ class ProductCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // Price using reusable PriceText
                           PriceText(
                             price: product.price,
                             size: PriceTextSize.medium,
                           ),
-
-                          // Reusable AddToCartButton component
                           AddToCartButton.compact(
                             product: product,
                             onPressed: onAddToCart,

@@ -20,8 +20,6 @@ class _LoginFormState extends State<LoginForm> {
   final _passwordTextController = TextEditingController();
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
-
-  // Local state strictly for temporary UI concerns
   bool _isPasswordObscured = true;
   bool _isFormValid = false;
 
@@ -139,7 +137,7 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           const SizedBox(height: 24),
-          // Demo Credentials Helper Card
+          // Demo Credentials
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(

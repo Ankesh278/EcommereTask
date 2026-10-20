@@ -3,9 +3,6 @@ import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
 import 'app_text_styles.dart';
 
-/// Centralized Application Theme configuration.
-/// Manages all component styling, typography, colors, and layout decorations
-/// in a separated, maintainable, and cohesive Material 3 theme.
 class AppTheme {
   const AppTheme._();
 
@@ -29,8 +26,6 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.background,
-
-      // Typography
       textTheme: const TextTheme(
         headlineLarge: AppTextStyles.headingLarge,
         headlineMedium: AppTextStyles.headingMedium,
@@ -42,7 +37,7 @@ class AppTheme {
         labelLarge: AppTextStyles.buttonText,
       ),
 
-      // App Bar Theme
+      // App Bar
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.surface,
         elevation: 0,
@@ -60,7 +55,6 @@ class AppTheme {
         ),
       ),
 
-      // Elevated Button Theme (Primary Action)
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
@@ -76,7 +70,6 @@ class AppTheme {
         ),
       ),
 
-      // Outlined Button Theme (Secondary Action)
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
@@ -91,7 +84,7 @@ class AppTheme {
         ),
       ),
 
-      // Text Button Theme
+      // Text Button
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.accentDark,
@@ -102,7 +95,7 @@ class AppTheme {
         ),
       ),
 
-      // Input Decoration Theme
+      // Input Decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.white,
@@ -133,7 +126,7 @@ class AppTheme {
         ),
       ),
 
-      // Card Theme
+      // Card
       cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 0,
@@ -143,7 +136,7 @@ class AppTheme {
         ),
       ),
 
-      // Bottom Sheet Theme
+      // Bottom Sheet
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -154,7 +147,7 @@ class AppTheme {
         ),
       ),
 
-      // Dialog Theme
+      // Dialog
       dialogTheme: DialogThemeData(
         backgroundColor: AppColors.surface,
         elevation: 4,
@@ -163,7 +156,7 @@ class AppTheme {
         ),
       ),
 
-      // SnackBar Theme
+      // SnackBar
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColors.primary,
         contentTextStyle: const TextStyle(color: Colors.white, fontSize: 14),
@@ -173,14 +166,14 @@ class AppTheme {
         ),
       ),
 
-      // Divider Theme
+      // Divider
       dividerTheme: const DividerThemeData(
         color: AppColors.border,
         thickness: 1,
         space: 1,
       ),
 
-      // Icon Theme
+      // Icon
       iconTheme: const IconThemeData(
         color: AppColors.textPrimary,
         size: AppDimensions.iconMedium,

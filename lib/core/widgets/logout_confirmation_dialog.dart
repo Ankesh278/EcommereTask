@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_confirmation_dialog.dart';
 
-/// Logout confirmation dialog that delegates to the reusable AppConfirmationDialog component.
 class LogoutConfirmationDialog extends StatelessWidget {
   final VoidCallback onConfirm;
 

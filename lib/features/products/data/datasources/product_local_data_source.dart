@@ -6,7 +6,6 @@ abstract class ProductLocalDataSource {
 }
 
 class ProductLocalDataSourceImpl implements ProductLocalDataSource {
-  // Static clothing catalog with 8 realistic products as per specifications
   static const List<Map<String, dynamic>> _staticProductsJson = [
     {
       'id': 'prod_001',
@@ -101,7 +100,6 @@ class ProductLocalDataSourceImpl implements ProductLocalDataSource {
   @override
   Future<List<ProductModel>> getProducts() async {
     try {
-      // Simulate brief loading delay
       await Future.delayed(const Duration(milliseconds: 350));
       return _staticProductsJson
           .map((json) => ProductModel.fromJson(json))

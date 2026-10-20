@@ -134,7 +134,6 @@ class _ProductListingPageState extends State<ProductListingPage> {
                     await context.read<ProductCubit>().loadProducts();
                   },
                   child: GridView.builder(
-                    // Ample bottom padding ensures floating cart button does not obscure last items
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,

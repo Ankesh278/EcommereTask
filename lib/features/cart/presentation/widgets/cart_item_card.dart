@@ -8,8 +8,6 @@ import '../../domain/entities/cart_item_entity.dart';
 import '../cubit/cart_cubit.dart';
 import 'quantity_selector.dart';
 
-/// Clean, reusable Cart Item Card adhering to SOLID principles.
-/// Composed of reusable ProductNetworkImage, PriceText, and QuantitySelector components.
 class CartItemCard extends StatelessWidget {
   final CartItemEntity item;
   final VoidCallback? onIncrement;
@@ -45,7 +43,7 @@ class CartItemCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Reusable Product Thumbnail
+          //Product image
           ProductNetworkImage(
             imageUrl: product.imageUrl,
             width: AppDimensions.cartItemThumbnailSize,
@@ -55,7 +53,7 @@ class CartItemCard extends StatelessWidget {
           ),
           const SizedBox(width: 14),
 
-          // Details and Quantity Controls
+          // Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +74,7 @@ class CartItemCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Trash / Remove button
+                    //Remove button
                     InkWell(
                       key: Key('remove_${product.id}'),
                       borderRadius: BorderRadius.circular(
@@ -101,21 +99,19 @@ class CartItemCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 2),
-
-                // Unit Price using reusable PriceText
                 PriceText.small(price: product.price, suffix: 'each'),
                 const SizedBox(height: 8),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Subtotal using reusable PriceText
+                    //total
                     PriceText(
                       price: item.totalPrice,
                       size: PriceTextSize.medium,
                     ),
 
-                    // Reusable Quantity Selector Component
+                    //counter
                     QuantitySelector(
                       productId: product.id,
                       quantity: item.quantity,
