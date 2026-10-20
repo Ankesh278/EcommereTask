@@ -11,11 +11,13 @@ This project strictly adheres to **Clean Architecture** and separation of concer
 ```text
 lib/
 ├── core/                               # Cross-cutting concerns & shared components
-│   ├── constants/                      # AppConstants, AppRoutes
+│   ├── constants/                      # AppConstants, AppColors, AppDimensions
 │   ├── errors/                         # Typed Failures (Equatable) & Exceptions
+│   ├── providers/                      # AppProviders (MultiBlocProvider wrapper)
+│   ├── routes/                         # AppRouteNames, AppRouter (clean separated routing)
 │   ├── theme/                          # AppColors, AppTheme, AppTextStyles
 │   ├── utils/                          # InputValidators & functional Result types
-│   └── widgets/                        # AppButton, AppTextField, AppLoadingIndicator, AppErrorView, AppSnackBar
+│   └── widgets/                        # AppButton, AppTextField, PriceText, Reusable UI
 │
 ├── features/
 │   ├── auth/                           # Authentication Feature
@@ -33,25 +35,11 @@ lib/
 │       └── presentation/               # CartCubit, CartState, CartPage, CartItemCard, CartSummaryBottomBar, EmptyCartView
 │
 ├── injection_container.dart             # Dependency injection container via get_it
-├── app.dart                            # MultiBlocProvider, root MaterialApp & routing
+├── app.dart                            # Root MaterialApp & provider/router coordination
 └── main.dart                           # App initialization & bootstrapping
 
 test/
-├── features/
-│   ├── auth/
-│   │   ├── domain/usecases/login_usecase_test.dart
-│   │   └── presentation/cubit/auth_cubit_test.dart
-│   ├── products/
-│   │   ├── domain/usecases/get_products_usecase_test.dart
-│   │   └── presentation/cubit/product_cubit_test.dart
-│   └── cart/
-│       └── presentation/cubit/cart_cubit_test.dart
-├── widgets/
-│   ├── product_card_test.dart
-│   ├── cart_item_card_test.dart
-│   └── login_page_test.dart
-├── test_helper.dart
-└── widget_test.dart
+└── widget_test.dart                    # App smoke test verifying startup and injection
 ```
 
 ### Layer Responsibilities
@@ -195,24 +183,17 @@ flutter run
 
 ## 🧪 Testing Suite Overview
 
-The project features comprehensive test coverage with **50 automated tests** across all features, clean architecture layers, and reusable UI components:
+The project features a standard Flutter smoke and widget test verifying app startup, dependency injection, and initial widget tree mounting:
 
-| Test File | Layer | What It Verifies |
+| Test File | Target | What It Verifies |
 |---|---|---|
-| `login_usecase_test.dart` | Auth Domain | Success and Failure resolution through repository contract |
-| `auth_cubit_test.dart` | Auth Presentation | Email/password validation, preventing invalid attempts, state transitions (`AuthInitial` -> `AuthLoading` -> `AuthSuccess` / `AuthFailureState`), reset |
-| `get_products_usecase_test.dart` | Products Domain | Repository delegation and Result handling |
-| `product_cubit_test.dart` | Products Presentation | Loading at least 5 products, loading states, error handling |
-| `cart_cubit_test.dart` | Cart Presentation | Initial empty state, adding products, duplicate prevention, increment, decrement, auto-removal at zero quantity, direct removal, clearing, badge count, distinct products count, no negative quantities, and immutability |
-| `product_card_test.dart` | Widgets | Product rendering with INR price, image fallback, Add to Cart callback |
-| `cart_item_card_test.dart` | Widgets | Item layout, INR pricing, increment, decrement, and remove buttons |
-| `login_page_test.dart` | Widgets | Form elements, disabled button state when empty/invalid, demo auto-fill, and password visibility toggle |
-| `product_details_bottom_sheet_test.dart` | Widgets | Product details sheet rendering, full multiline description, and Add to Cart integration |
-| `ui_enhancements_test.dart` | Widgets | Floating Cart Button reactive animation and LogoutConfirmationDialog actions |
-| `reusable_components_test.dart` | Reusable Core | AppButton (variants/loading), AppTextField (validation/required), AddToCartButton (compact/expanded), QuantitySelector, PriceText, ProductNetworkImage, AppConfirmationDialog |
-| `widget_test.dart` | Integration / Flow | Complete end-to-end user journey: Launch -> Login -> Products -> Cart -> Navigation -> Cart State Preservation |
+| `widget_test.dart` | Smoke / Widget Test | Initializes dependencies via `initDependencies()`, pumps `EcommerceApp`, and verifies app tree renders without crashing |
 
-All **50 tests** pass cleanly with 100% success.
+Execute test with:
+```bash
+flutter test
+```
+All tests pass cleanly with 100% success.
 
 ---
 
