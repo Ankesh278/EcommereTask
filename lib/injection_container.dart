@@ -12,6 +12,7 @@ import 'features/products/domain/repositories/product_repository.dart';
 import 'features/products/domain/usecases/get_products_usecase.dart';
 import 'features/products/presentation/cubit/product_cubit.dart';
 
+import 'features/cart/domain/usecases/calculate_cart_total_usecase.dart';
 import 'features/cart/presentation/cubit/cart_cubit.dart';
 
 final sl = GetIt.instance;
@@ -66,6 +67,11 @@ Future<void> initDependencies() async {
   // ----------------------------------------------------
   // Features - Cart
   // ----------------------------------------------------
+  // Use Cases
+  sl.registerLazySingleton<CalculateCartTotalUseCase>(
+    () => const CalculateCartTotalUseCase(),
+  );
+
   // CartCubit: MUST be a shared Singleton across all screens so that
   // cart contents, quantity modifications, and badge counts are
   // preserved seamlessly when navigating between screens.

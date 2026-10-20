@@ -10,14 +10,14 @@ abstract class AuthLocalDataSource {
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
-  final String validEmail;
-  final String validPassword;
-  final String userName;
+  final String primaryEmail;
+  final String primaryPassword;
+  final String primaryName;
 
   AuthLocalDataSourceImpl({
-    this.validEmail = AppConstants.dummyEmail,
-    this.validPassword = AppConstants.dummyPassword,
-    this.userName = AppConstants.dummyUserName,
+    this.primaryEmail = AppConstants.demoEmail,
+    this.primaryPassword = AppConstants.demoPassword,
+    this.primaryName = AppConstants.demoUserName,
   });
 
   @override
@@ -26,21 +26,32 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     required String password,
   }) async {
     // Simulate brief network latency for realistic UX
-    await Future.delayed(const Duration(milliseconds: 600));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     final normalizedEmail = email.trim().toLowerCase();
-    final expectedEmail = validEmail.trim().toLowerCase();
 
-    if (normalizedEmail == expectedEmail && password == validPassword) {
+    // Check primary demo credentials (demo@example.com / Demo@123)
+    if (normalizedEmail == primaryEmail.toLowerCase() &&
+        password == primaryPassword) {
       return UserModel(
-        id: 'user_001',
-        name: userName,
+        id: 'user_demo',
+        name: primaryName,
         email: email.trim(),
       );
-    } else {
-      throw const AuthException(
-        'Invalid email or password. Use demo credentials to sign in.',
+    }
+
+    // Also support alternative dummy credentials (user@example.com / password123)
+    if (normalizedEmail == AppConstants.dummyEmail.toLowerCase() &&
+        password == AppConstants.dummyPassword) {
+      return UserModel(
+        id: 'user_001',
+        name: AppConstants.dummyUserName,
+        email: email.trim(),
       );
     }
+
+    throw const AuthException(
+      'Invalid email or password. Use demo credentials to sign in.',
+    );
   }
 }

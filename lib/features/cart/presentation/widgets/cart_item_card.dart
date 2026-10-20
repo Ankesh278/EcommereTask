@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/cart_item_entity.dart';
 import '../cubit/cart_cubit.dart';
 
@@ -105,7 +106,7 @@ class CartItemCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '\$${product.price.toStringAsFixed(2)} each',
+                  '${AppConstants.currencySymbol}${product.price.toInt()} each',
                   style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
@@ -117,7 +118,7 @@ class CartItemCard extends StatelessWidget {
                   children: [
                     // Subtotal
                     Text(
-                      '\$${item.totalPrice.toStringAsFixed(2)}',
+                      '${AppConstants.currencySymbol}${item.totalPrice.toInt()}',
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w800,

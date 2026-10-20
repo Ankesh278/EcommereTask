@@ -6,73 +6,95 @@ abstract class ProductLocalDataSource {
 }
 
 class ProductLocalDataSourceImpl implements ProductLocalDataSource {
-  // Static clothing catalog with realistic mock items
+  // Static clothing catalog with 8 realistic products as per specifications
   static const List<Map<String, dynamic>> _staticProductsJson = [
     {
       'id': 'prod_001',
-      'name': 'Heritage Denim Jacket',
+      'name': 'Classic Cotton T-Shirt',
       'description':
-          'Crafted from 100% durable organic cotton denim with brass hardware, vintage wash, and classic chest flap pockets.',
-      'price': 89.99,
+          'Breathable 100% combed cotton crewneck t-shirt with durable double-stitched hem and soft everyday feel.',
+      'price': 799.0,
+      'imageUrl':
+          'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+      'category': 'T-Shirts',
+      'rating': 4.7,
+    },
+    {
+      'id': 'prod_002',
+      'name': 'Oversized Graphic T-Shirt',
+      'description':
+          'Trendy dropped-shoulder fit crafted with heavyweight jersey fabric and minimal street-style screen print.',
+      'price': 999.0,
+      'imageUrl':
+          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80',
+      'category': 'T-Shirts',
+      'rating': 4.6,
+    },
+    {
+      'id': 'prod_003',
+      'name': 'Casual Denim Jacket',
+      'description':
+          'Timeless vintage blue wash denim jacket featuring brass buttons, dual chest pockets, and adjustable waist tabs.',
+      'price': 2499.0,
       'imageUrl':
           'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80',
       'category': 'Outerwear',
       'rating': 4.8,
     },
     {
-      'id': 'prod_002',
-      'name': 'Premium Pima Crewneck T-Shirt',
-      'description':
-          'Ultra-soft Peruvian Pima cotton with tailored fit, breathable jersey weave, and reinforced collar stitching.',
-      'price': 34.50,
-      'imageUrl':
-          'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
-      'category': 'Tops',
-      'rating': 4.6,
-    },
-    {
-      'id': 'prod_003',
-      'name': 'Slim Stretch Chino Pants',
-      'description':
-          'Modern slim-tapered chinos made with cotton-twill stretch blend, perfect for both smart-casual and weekend styling.',
-      'price': 59.00,
-      'imageUrl':
-          'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80',
-      'category': 'Bottoms',
-      'rating': 4.7,
-    },
-    {
       'id': 'prod_004',
-      'name': 'Merino Wool Ribbed Sweater',
+      'name': 'Slim Fit Jeans',
       'description':
-          '100% extrafine merino wool offering natural thermal regulation, lightweight warmth, and a sophisticated ribbed knit texture.',
-      'price': 98.00,
+          'Comfortable stretch denim trousers with contemporary tapered legs, 5-pocket styling, and zip fly.',
+      'price': 1799.0,
       'imageUrl':
-          'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=80',
-      'category': 'Knitwear',
-      'rating': 4.9,
+          'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80',
+      'category': 'Jeans',
+      'rating': 4.5,
     },
     {
       'id': 'prod_005',
-      'name': 'Urban Technical Hooded Parka',
+      'name': 'Premium Hoodie',
       'description':
-          'Waterproof and windproof shell with recycled insulation, storm cuffs, and deep utility fleece-lined pockets.',
-      'price': 149.95,
+          'Cozy fleece-lined pullover hoodie with kangaroo pocket, ribbed cuffs, and drawstring adjustable hood.',
+      'price': 1999.0,
       'imageUrl':
-          'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=800&q=80',
-      'category': 'Outerwear',
+          'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+      'category': 'Hoodies',
       'rating': 4.9,
     },
     {
       'id': 'prod_006',
-      'name': 'Classic Oxford Cotton Shirt',
+      'name': 'Casual Linen Shirt',
       'description':
-          'Crisp yarn-dyed oxford weave button-down shirt designed with buttoned collar, box pleat, and curved hem.',
-      'price': 48.00,
+          'Lightweight pure linen button-down shirt designed with breathable weave and relaxed resort collar.',
+      'price': 1299.0,
       'imageUrl':
           'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80',
       'category': 'Shirts',
-      'rating': 4.5,
+      'rating': 4.6,
+    },
+    {
+      'id': 'prod_007',
+      'name': 'Sports Sneakers',
+      'description':
+          'Versatile lifestyle runners with cushioned EVA midsole, flexible rubber traction outsole, and mesh upper.',
+      'price': 2999.0,
+      'imageUrl':
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+      'category': 'Footwear',
+      'rating': 4.8,
+    },
+    {
+      'id': 'prod_008',
+      'name': 'Everyday Backpack',
+      'description':
+          'Durable water-resistant canvas backpack with padded laptop sleeve, organizer compartments, and ergonomic straps.',
+      'price': 1499.0,
+      'imageUrl':
+          'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
+      'category': 'Accessories',
+      'rating': 4.7,
     },
   ];
 
@@ -80,7 +102,7 @@ class ProductLocalDataSourceImpl implements ProductLocalDataSource {
   Future<List<ProductModel>> getProducts() async {
     try {
       // Simulate brief loading delay
-      await Future.delayed(const Duration(milliseconds: 400));
+      await Future.delayed(const Duration(milliseconds: 350));
       return _staticProductsJson
           .map((json) => ProductModel.fromJson(json))
           .toList();

@@ -49,8 +49,8 @@ void main() {
 
     // Verify product name and pricing
     expect(find.text('Heritage Denim Jacket'), findsOneWidget);
-    expect(find.text('\$89.99 each'), findsOneWidget);
-    expect(find.text('\$179.98'), findsOneWidget);
+    expect(find.text('₹${tProduct.price.toInt()} each'), findsOneWidget);
+    expect(find.text('₹${tCartItem.totalPrice.toInt()}'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
 
     // Test increment

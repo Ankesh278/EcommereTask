@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/error_view.dart';
+import '../../../../core/widgets/loading_indicator.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../cubit/product_cubit.dart';
 import '../cubit/product_state.dart';
@@ -19,7 +22,6 @@ class _ProductListingPageState extends State<ProductListingPage> {
   @override
   void initState() {
     super.initState();
-    // Ensure products are loaded if not already
     final cubit = context.read<ProductCubit>();
     if (cubit.state is ProductInitial) {
       cubit.loadProducts();
@@ -59,11 +61,42 @@ class _ProductListingPageState extends State<ProductListingPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.checkroom_rounded, color: AppColors.primary, size: 24),
-            SizedBox(width: 8),
-            Text(AppConstants.appTitle),
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.checkroom_rounded,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  AppConstants.appTitle,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textPrimary,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                Text(
+                  'Exclusive Collection',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         actions: [
@@ -79,58 +112,15 @@ class _ProductListingPageState extends State<ProductListingPage> {
       body: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
           if (state is ProductLoading) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Loading fashion catalog...',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
+            return const AppLoadingIndicator(
+              message: 'Loading fashion catalog...',
             );
           }
 
           if (state is ProductError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline_rounded,
-                      size: 56,
-                      color: AppColors.error,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      state.message,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton.icon(
-                      onPressed: () => context.read<ProductCubit>().loadProducts(),
-                      icon: const Icon(Icons.refresh_rounded),
-                      label: const Text('Try Again'),
-                    ),
-                  ],
-                ),
-              ),
+            return AppErrorView(
+              message: state.message,
+              onRetry: () => context.read<ProductCubit>().loadProducts(),
             );
           }
 
@@ -145,7 +135,6 @@ class _ProductListingPageState extends State<ProductListingPage> {
 
             return LayoutBuilder(
               builder: (context, constraints) {
-                // Determine responsive column count
                 int crossAxisCount = 2;
                 if (constraints.maxWidth > 900) {
                   crossAxisCount = 4;

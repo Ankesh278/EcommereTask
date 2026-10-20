@@ -18,7 +18,6 @@ class EcommerceApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Shared Singleton CartCubit across the entire app
         BlocProvider<CartCubit>.value(
           value: sl<CartCubit>(),
         ),

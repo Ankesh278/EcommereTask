@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/app_button.dart';
 import '../cubit/cart_cubit.dart';
 import '../cubit/cart_state.dart';
 
@@ -17,9 +19,9 @@ class CartSummaryBottomBar extends StatelessWidget {
         ),
         title: const Row(
           children: [
-            Icon(Icons.check_circle_rounded, color: AppColors.success, size: 28),
+            Icon(Icons.info_outline_rounded, color: AppColors.accentDark, size: 26),
             SizedBox(width: 10),
-            Text('Order Confirmed!'),
+            Text('Checkout Notice'),
           ],
         ),
         content: Column(
@@ -27,8 +29,8 @@ class CartSummaryBottomBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Thank you for your demo purchase! Your mock order has been placed successfully.',
-              style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+              'Checkout functionality is not implemented in this demo assessment, as specified in the requirements.',
+              style: AppTextStyles.bodyMedium,
             ),
             const SizedBox(height: 16),
             Container(
@@ -42,13 +44,10 @@ class CartSummaryBottomBar extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Total Items:',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
+                      const Text('Distinct Products:', style: TextStyle(fontSize: 13)),
                       Text(
-                        '${state.totalItemCount}',
-                        style: const TextStyle(fontWeight: FontWeight.w700),
+                        '${state.distinctProductCount}',
+                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
                       ),
                     ],
                   ),
@@ -56,12 +55,20 @@ class CartSummaryBottomBar extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Amount Paid:',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
+                      const Text('Total Items Quantity:', style: TextStyle(fontSize: 13)),
                       Text(
-                        '\$${state.totalPrice.toStringAsFixed(2)}',
+                        '${state.totalItemCount}',
+                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Total Cart Amount:', style: TextStyle(fontWeight: FontWeight.w600)),
+                      Text(
+                        '${AppConstants.currencySymbol}${state.totalPrice.toInt()}',
                         style: const TextStyle(
                           fontWeight: FontWeight.w800,
                           color: AppColors.primary,
@@ -75,13 +82,21 @@ class CartSummaryBottomBar extends StatelessWidget {
           ],
         ),
         actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('Keep Shopping'),
+          ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+            ),
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<CartCubit>().clearCart();
               Navigator.pop(context); // Go back to products
             },
-            child: const Text('Back to Store'),
+            child: const Text('Clear & Reset Cart'),
           ),
         ],
       ),
@@ -113,20 +128,17 @@ class CartSummaryBottomBar extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Distinct products & total quantity rows
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Subtotal (${state.totalItemCount} items)',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textSecondary,
-                      ),
+                      'Unique Products (${state.distinctProductCount})',
+                      style: AppTextStyles.bodyMedium,
                     ),
                     Text(
-                      '\$${state.totalPrice.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontSize: 15,
+                      '${state.totalItemCount} items total',
+                      style: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                         color: AppColors.textPrimary,
                       ),
@@ -137,13 +149,7 @@ class CartSummaryBottomBar extends StatelessWidget {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Shipping',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
+                    Text('Delivery', style: AppTextStyles.bodyMedium),
                     Text(
                       'FREE',
                       style: TextStyle(
@@ -162,7 +168,7 @@ class CartSummaryBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Total Amount',
+                      'Total Cart Amount',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -170,18 +176,14 @@ class CartSummaryBottomBar extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '\$${state.totalPrice.toStringAsFixed(2)}',
+                      '${AppConstants.currencySymbol}${state.totalPrice.toInt()}',
                       key: const Key('cart_total_price'),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primary,
-                      ),
+                      style: AppTextStyles.priceTotal,
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                CustomButton(
+                AppButton(
                   text: 'Proceed to Checkout',
                   icon: Icons.lock_outline_rounded,
                   onPressed: () => _showCheckoutDialog(context, state),

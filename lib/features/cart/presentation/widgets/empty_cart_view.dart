@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/app_button.dart';
 
 class EmptyCartView extends StatelessWidget {
   const EmptyCartView({super.key});
@@ -29,31 +31,26 @@ class EmptyCartView extends StatelessWidget {
             const SizedBox(height: 24),
             const Text(
               'Your cart is empty',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
-                letterSpacing: -0.3,
-              ),
+              style: AppTextStyles.headingLarge,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             const Text(
               'Looks like you haven’t added any fashion pieces yet. Explore our latest arrivals and fill your cart!',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary,
-                height: 1.4,
-              ),
+              style: AppTextStyles.bodyMedium,
             ),
             const SizedBox(height: 32),
             SizedBox(
-              width: 200,
-              child: CustomButton(
-                text: 'Start Shopping',
+              width: 220,
+              child: AppButton(
+                text: 'Continue Shopping',
                 icon: Icons.storefront_rounded,
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.popUntil(
+                    context,
+                    ModalRoute.withName(AppConstants.routeProducts),
+                  );
                 },
               ),
             ),

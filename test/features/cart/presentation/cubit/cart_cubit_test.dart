@@ -245,5 +245,35 @@ void main() {
       expect(cartCubit.getProductQuantity(tProductA.id), 3);
       expect(cartCubit.getProductQuantity('non_existent_id'), 0);
     });
+
+    test('distinctProductCount and totalItemCount are clearly distinguished', () {
+      cartCubit.emit(
+        const CartState(
+          items: [
+            CartItemEntity(product: tProductA, quantity: 3),
+            CartItemEntity(product: tProductB, quantity: 2),
+          ],
+        ),
+      );
+
+      expect(cartCubit.state.distinctProductCount, 2);
+      expect(cartCubit.state.totalItemCount, 5);
+      expect(cartCubit.state.totalPrice, (80.0 * 3) + (30.0 * 2));
+      expect(cartCubit.state.formattedTotalPrice, '₹300');
+    });
+
+    test('state is immutable and collections are not mutated in place', () {
+      final initialList = [
+        const CartItemEntity(product: tProductA, quantity: 1),
+      ];
+      cartCubit.emit(CartState(items: initialList));
+
+      cartCubit.increaseQuantity(tProductA.id);
+
+      // Verify that initialList was not modified in-place
+      expect(initialList.first.quantity, 1);
+      // New state has updated copy
+      expect(cartCubit.state.items.first.quantity, 2);
+    });
   });
 }

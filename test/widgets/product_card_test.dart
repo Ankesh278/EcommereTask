@@ -51,7 +51,7 @@ void main() {
 
     // Verify UI items
     expect(find.text('Heritage Denim Jacket'), findsOneWidget);
-    expect(find.text('\$89.99'), findsOneWidget);
+    expect(find.text('₹${tProduct.price.toInt()}'), findsOneWidget);
     expect(find.text('Outerwear'), findsOneWidget);
     expect(find.text('4.8'), findsOneWidget);
     expect(find.byIcon(Icons.star_rounded), findsOneWidget);

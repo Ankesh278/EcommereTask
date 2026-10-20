@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../cart/presentation/cubit/cart_cubit.dart';
 import '../../../cart/presentation/cubit/cart_state.dart';
@@ -51,24 +52,13 @@ class ProductCard extends StatelessWidget {
           Expanded(
             flex: 6,
             child: Stack(
-              fit: StackFit.expand,
+              fit: dynamicFit,
               children: [
                 Image.network(
                   product.imageUrl,
                   fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
-                      color: AppColors.surfaceVariant,
-                      child: const Center(
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                      ),
-                    );
-                  },
+                  width: double.infinity,
+                  height: double.infinity,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
                       color: AppColors.surfaceVariant,
@@ -77,7 +67,7 @@ class ProductCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.checkroom_rounded,
-                            size: 48,
+                            size: 44,
                             color: AppColors.textMuted.withValues(alpha: 0.7),
                           ),
                           const SizedBox(height: 4),
@@ -126,7 +116,7 @@ class ProductCard extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.9),
+                      color: Colors.white.withValues(alpha: 0.92),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
@@ -192,7 +182,7 @@ class ProductCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${product.price.toStringAsFixed(2)}',
+                        '${AppConstants.currencySymbol}${product.price.toInt()}',
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w800,
@@ -253,4 +243,6 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
+
+  static const StackFit dynamicFit = StackFit.expand;
 }

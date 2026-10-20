@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_constants.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_text_field.dart';
+import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_text_field.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 
@@ -18,31 +18,58 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
 
-  // Local state strictly for temporary UI concern (password visibility toggle)
+  // Local state strictly for temporary UI concerns
   bool _obscurePassword = true;
+  bool _isFormValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.addListener(_validateInputs);
+    _passwordController.addListener(_validateInputs);
+  }
+
+  void _validateInputs() {
+    final cubit = context.read<AuthCubit>();
+    final emailError = cubit.validateEmail(_emailController.text);
+    final passwordError = cubit.validatePassword(_passwordController.text);
+
+    final isValid = emailError == null && passwordError == null;
+    if (isValid != _isFormValid) {
+      setState(() {
+        _isFormValid = isValid;
+      });
+    }
+  }
 
   @override
   void dispose() {
+    _emailController.removeListener(_validateInputs);
+    _passwordController.removeListener(_validateInputs);
     _emailController.dispose();
     _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
   void _submit() {
-    if (_formKey.currentState?.validate() ?? false) {
+    if (_isFormValid && (_formKey.currentState?.validate() ?? false)) {
       FocusScope.of(context).unfocus();
       context.read<AuthCubit>().login(
-            email: _emailController.text,
+            email: _emailController.text.trim(),
             password: _passwordController.text,
           );
     }
   }
 
   void _fillDemoCredentials() {
-    _emailController.text = AppConstants.dummyEmail;
-    _passwordController.text = AppConstants.dummyPassword;
-    setState(() {});
+    _emailController.text = AppConstants.demoEmail;
+    _passwordController.text = AppConstants.demoPassword;
+    _validateInputs();
   }
 
   @override
@@ -51,21 +78,27 @@ class _LoginFormState extends State<LoginForm> {
 
     return Form(
       key: _formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CustomTextField(
+          AppTextField(
             controller: _emailController,
+            focusNode: _emailFocusNode,
             labelText: 'Email Address',
-            hintText: 'e.g. ${AppConstants.dummyEmail}',
+            hintText: 'e.g. ${AppConstants.demoEmail}',
             prefixIcon: Icons.email_outlined,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) {
+              FocusScope.of(context).requestFocus(_passwordFocusNode);
+            },
             validator: cubit.validateEmail,
           ),
           const SizedBox(height: 18),
-          CustomTextField(
+          AppTextField(
             controller: _passwordController,
+            focusNode: _passwordFocusNode,
             labelText: 'Password',
             hintText: 'Enter your password',
             prefixIcon: Icons.lock_outline,
@@ -92,11 +125,12 @@ class _LoginFormState extends State<LoginForm> {
           BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               final isLoading = state is AuthLoading;
-              return CustomButton(
+
+              return AppButton(
                 text: 'Sign In',
                 isLoading: isLoading,
                 icon: Icons.login_rounded,
-                onPressed: _submit,
+                onPressed: (_isFormValid && !isLoading) ? _submit : null,
               );
             },
           ),
@@ -153,7 +187,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'Email: ${AppConstants.dummyEmail}\nPassword: ${AppConstants.dummyPassword}',
+                  'Email: ${AppConstants.demoEmail}\nPassword: ${AppConstants.demoPassword}',
                   style: TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
