@@ -195,7 +195,7 @@ flutter run
 
 ## 🧪 Testing Suite Overview
 
-The project features comprehensive test coverage with **35 automated tests** across all features and widget layers:
+The project features comprehensive test coverage with **50 automated tests** across all features, clean architecture layers, and reusable UI components:
 
 | Test File | Layer | What It Verifies |
 |---|---|---|
@@ -207,9 +207,12 @@ The project features comprehensive test coverage with **35 automated tests** acr
 | `product_card_test.dart` | Widgets | Product rendering with INR price, image fallback, Add to Cart callback |
 | `cart_item_card_test.dart` | Widgets | Item layout, INR pricing, increment, decrement, and remove buttons |
 | `login_page_test.dart` | Widgets | Form elements, disabled button state when empty/invalid, demo auto-fill, and password visibility toggle |
+| `product_details_bottom_sheet_test.dart` | Widgets | Product details sheet rendering, full multiline description, and Add to Cart integration |
+| `ui_enhancements_test.dart` | Widgets | Floating Cart Button reactive animation and LogoutConfirmationDialog actions |
+| `reusable_components_test.dart` | Reusable Core | AppButton (variants/loading), AppTextField (validation/required), AddToCartButton (compact/expanded), QuantitySelector, PriceText, ProductNetworkImage, AppConfirmationDialog |
 | `widget_test.dart` | Integration / Flow | Complete end-to-end user journey: Launch -> Login -> Products -> Cart -> Navigation -> Cart State Preservation |
 
-All **35 tests** pass cleanly with 100% success.
+All **50 tests** pass cleanly with 100% success.
 
 ---
 

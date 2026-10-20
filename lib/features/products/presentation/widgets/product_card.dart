@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/widgets/app_snackbar.dart';
-import '../../../cart/presentation/cubit/cart_cubit.dart';
-import '../../../cart/presentation/cubit/cart_state.dart';
+import '../../../../core/constants/app_dimensions.dart';
+import '../../../../core/widgets/price_text.dart';
+import '../../../../core/widgets/product_network_image.dart';
 import '../../domain/entities/product_entity.dart';
-
+import 'add_to_cart_button.dart';
 import 'product_details_bottom_sheet.dart';
 
+/// Product Card component adhering to SOLID principles.
+/// Composes reusable ProductNetworkImage, PriceText, and AddToCartButton widgets.
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
   final VoidCallback? onAddToCart;
@@ -29,21 +29,12 @@ class ProductCard extends StatelessWidget {
     }
   }
 
-  void _handleAddToCart(BuildContext context) {
-    if (onAddToCart != null) {
-      onAddToCart!();
-    } else {
-      context.read<CartCubit>().addToCart(product);
-      AppSnackBar.showSuccess(context, '${product.name} added to cart');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
         border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
@@ -61,44 +52,19 @@ class ProductCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Product Image Header
+              // Product Image Header with category & rating overlays
               Expanded(
                 flex: 6,
                 child: Stack(
-                  fit: dynamicFit,
+                  fit: StackFit.expand,
                   children: [
-                    Image.network(
-                      product.imageUrl,
+                    ProductNetworkImage(
+                      imageUrl: product.imageUrl,
+                      placeholderCategory: product.category,
                       fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: AppColors.surfaceVariant,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.checkroom_rounded,
-                                size: 44,
-                                color: AppColors.textMuted.withValues(
-                                  alpha: 0.7,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                product.category,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
                     ),
-                    // Category Chip Badge
+
+                    // Category Pill Badge
                     Positioned(
                       top: 8,
                       left: 8,
@@ -109,7 +75,9 @@ class ProductCard extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.85),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(
+                            AppDimensions.radiusSM,
+                          ),
                         ),
                         child: Text(
                           product.category,
@@ -121,6 +89,7 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                     ),
+
                     // Rating Badge
                     Positioned(
                       top: 8,
@@ -132,7 +101,9 @@ class ProductCard extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.92),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(
+                            AppDimensions.radiusSM,
+                          ),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -158,7 +129,8 @@ class ProductCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Product Details
+
+              // Product Details Section
               Expanded(
                 flex: 5,
                 child: Padding(
@@ -196,58 +168,16 @@ class ProductCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${AppConstants.currencySymbol}${product.price.toInt()}',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.textPrimary,
-                            ),
+                          // Price using reusable PriceText
+                          PriceText(
+                            price: product.price,
+                            size: PriceTextSize.medium,
                           ),
-                          BlocBuilder<CartCubit, CartState>(
-                            builder: (context, cartState) {
-                              final qtyInCart = context
-                                  .read<CartCubit>()
-                                  .getProductQuantity(product.id);
 
-                              return ElevatedButton(
-                                key: Key('add_to_cart_${product.id}'),
-                                onPressed: () => _handleAddToCart(context),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: qtyInCart > 0
-                                      ? AppColors.accentDark
-                                      : AppColors.primary,
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 6,
-                                  ),
-                                  minimumSize: Size.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      Icons.add_shopping_cart,
-                                      size: 14,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      qtyInCart > 0 ? '($qtyInCart)' : 'Add',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
+                          // Reusable AddToCartButton component
+                          AddToCartButton.compact(
+                            product: product,
+                            onPressed: onAddToCart,
                           ),
                         ],
                       ),
@@ -261,6 +191,4 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
-
-  static const StackFit dynamicFit = StackFit.expand;
 }

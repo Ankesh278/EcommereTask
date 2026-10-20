@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/app_button.dart';
-import '../../../../core/widgets/app_snackbar.dart';
+import '../../../../core/widgets/price_text.dart';
+import '../../../../core/widgets/product_network_image.dart';
 import '../../../cart/presentation/cubit/cart_cubit.dart';
-import '../../../cart/presentation/cubit/cart_state.dart';
 import '../../domain/entities/product_entity.dart';
+import 'add_to_cart_button.dart';
 
+/// Reusable Product Details Modal Bottom Sheet adhering to SOLID principles.
+/// Composes reusable ProductNetworkImage, PriceText, and AddToCartButton components.
 class ProductDetailsBottomSheet extends StatelessWidget {
   final ProductEntity product;
 
@@ -29,11 +31,6 @@ class ProductDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  void _handleAddToCart(BuildContext context) {
-    context.read<CartCubit>().addToCart(product);
-    AppSnackBar.showSuccess(context, '${product.name} added to cart');
-  }
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -43,7 +40,9 @@ class ProductDetailsBottomSheet extends StatelessWidget {
       constraints: BoxConstraints(maxHeight: maxHeight),
       decoration: const BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppDimensions.radiusXL),
+        ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -75,6 +74,7 @@ class ProductDetailsBottomSheet extends StatelessWidget {
               ],
             ),
           ),
+
           // Scrollable Body Content
           Flexible(
             child: SingleChildScrollView(
@@ -82,41 +82,15 @@ class ProductDetailsBottomSheet extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Large Product Image
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: AspectRatio(
-                      aspectRatio: 1.25,
-                      child: Image.network(
-                        product.imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: AppColors.surfaceVariant,
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.checkroom_rounded,
-                                  size: 64,
-                                  color: AppColors.textMuted,
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'AuraWear Collection',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.textSecondary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                  // Reusable Large Product Image
+                  ProductNetworkImage(
+                    imageUrl: product.imageUrl,
+                    aspectRatio: AppDimensions.sheetImageAspectRatio,
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
+                    placeholderCategory: product.category,
                   ),
                   const SizedBox(height: 16),
+
                   // Category & Rating Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,7 +102,9 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.surfaceVariant,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(
+                            AppDimensions.radiusSM,
+                          ),
                           border: Border.all(color: AppColors.border),
                         ),
                         child: Text(
@@ -170,25 +146,22 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
+
                   // Product Name
                   Text(
                     product.name,
                     style: AppTextStyles.headingLarge.copyWith(fontSize: 22),
                   ),
                   const SizedBox(height: 8),
-                  // Price
-                  Text(
-                    '${AppConstants.currencySymbol}${product.price.toInt()}',
-                    style: AppTextStyles.price.copyWith(
-                      fontSize: 24,
-                      color: AppColors.primary,
-                    ),
-                  ),
+
+                  // Price using reusable PriceText
+                  PriceText.large(price: product.price),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Divider(color: AppColors.border),
                   ),
-                  // Description
+
+                  // Description Overview
                   const Text(
                     'Product Overview',
                     style: TextStyle(
@@ -211,7 +184,8 @@ class ProductDetailsBottomSheet extends StatelessWidget {
               ),
             ),
           ),
-          // Fixed Bottom Action Bar
+
+          // Fixed Bottom Action Bar with Reusable AddToCartButton
           Container(
             padding: EdgeInsets.fromLTRB(
               20,
@@ -221,7 +195,7 @@ class ProductDetailsBottomSheet extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: AppColors.surface,
-              border: Border(top: BorderSide(color: AppColors.border)),
+              border: const Border(top: BorderSide(color: AppColors.border)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
@@ -230,21 +204,7 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                 ),
               ],
             ),
-            child: BlocBuilder<CartCubit, CartState>(
-              builder: (context, cartState) {
-                final qtyInCart = context.read<CartCubit>().getProductQuantity(
-                  product.id,
-                );
-
-                return AppButton(
-                  text: qtyInCart > 0
-                      ? 'Add to Cart ($qtyInCart in cart)'
-                      : 'Add to Cart',
-                  icon: Icons.add_shopping_cart_rounded,
-                  onPressed: () => _handleAddToCart(context),
-                );
-              },
-            ),
+            child: AddToCartButton.expanded(product: product),
           ),
         ],
       ),
