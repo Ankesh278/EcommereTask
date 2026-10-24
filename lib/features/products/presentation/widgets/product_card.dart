@@ -3,11 +3,12 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/widgets/price_text.dart';
 import '../../../../core/widgets/product_network_image.dart';
+import '../../../../core/routes/app_route_names.dart';
 import '../../domain/entities/product_entity.dart';
 import 'add_to_cart_button.dart';
-import 'product_details_bottom_sheet.dart';
 
 class ProductCard extends StatelessWidget {
+
   final ProductEntity product;
   final VoidCallback? onAddToCart;
   final VoidCallback? onTap;
@@ -23,9 +24,14 @@ class ProductCard extends StatelessWidget {
     if (onTap != null) {
       onTap!();
     } else {
-      ProductDetailsBottomSheet.show(context, product);
+      Navigator.pushNamed(
+        context,
+        AppRouteNames.productDetail,
+        arguments: product,
+      );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,45 +139,51 @@ class ProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            product.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            product.description,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 11,
-                              color: AppColors.textSecondary,
-                              height: 1.3,
+                            const SizedBox(height: 4),
+                            Text(
+                              product.description,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: AppColors.textSecondary,
+                                height: 1.3,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          PriceText(
-                            price: product.price,
-                            size: PriceTextSize.medium,
+                          Flexible(
+                            child: PriceText(
+                              price: product.price,
+                              size: PriceTextSize.medium,
+                            ),
                           ),
+                          const SizedBox(width: 6),
                           AddToCartButton.compact(
                             product: product,
                             onPressed: onAddToCart,
                           ),
                         ],
                       ),
+
                     ],
                   ),
                 ),

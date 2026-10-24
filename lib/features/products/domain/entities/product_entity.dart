@@ -8,6 +8,10 @@ class ProductEntity extends Equatable {
   final String imageUrl;
   final String category;
   final double rating;
+  final String brand;
+  final int stock;
+  final double discountPercentage;
+  final List<String> images;
 
   const ProductEntity({
     required this.id,
@@ -17,7 +21,18 @@ class ProductEntity extends Equatable {
     required this.imageUrl,
     required this.category,
     required this.rating,
+    this.brand = '',
+    this.stock = 0,
+    this.discountPercentage = 0.0,
+    this.images = const [],
   });
+
+  /// Alias for name to match title in DummyJSON API
+  String get title => name;
+
+  /// Calculate original price before discount
+  double get originalPrice =>
+      discountPercentage > 0 ? price / (1 - (discountPercentage / 100)) : price;
 
   @override
   List<Object?> get props => [
@@ -28,5 +43,10 @@ class ProductEntity extends Equatable {
     imageUrl,
     category,
     rating,
+    brand,
+    stock,
+    discountPercentage,
+    images,
   ];
 }
+

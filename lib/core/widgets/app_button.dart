@@ -219,13 +219,21 @@ class AppButton extends StatelessWidget {
           Icon(icon, size: iconSize, color: foregroundColor),
           SizedBox(width: size == AppButtonSize.small ? 4 : 8),
         ],
-        Text(text, style: textStyle),
+        Flexible(
+          child: Text(
+            text,
+            style: textStyle,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ),
         if (suffixIcon != null) ...[
           SizedBox(width: size == AppButtonSize.small ? 4 : 8),
           Icon(suffixIcon, size: iconSize, color: foregroundColor),
         ],
       ],
     );
+
   }
 
   double _resolveHeight() {

@@ -12,4 +12,6 @@ class AppConstants {
   static const String routeLogin = AppRouteNames.login;
   static const String routeProducts = AppRouteNames.products;
   static const String routeCart = AppRouteNames.cart;
+  static const String routeProductDetail = AppRouteNames.productDetail;
 }
+

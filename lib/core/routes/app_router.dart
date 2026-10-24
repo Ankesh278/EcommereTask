@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/cart/presentation/pages/cart_page.dart';
+import '../../features/products/domain/entities/product_entity.dart';
+import '../../features/products/presentation/pages/product_detail_page.dart';
 import '../../features/products/presentation/pages/product_listing_page.dart';
 import 'app_route_names.dart';
 
@@ -13,6 +15,7 @@ class AppRouter {
     AppRouteNames.products: (context) => const ProductListingPage(),
     AppRouteNames.cart: (context) => const CartPage(),
   };
+
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRouteNames.login:
@@ -30,6 +33,21 @@ class AppRouter {
       case AppRouteNames.cart:
         return MaterialPageRoute<void>(
           builder: (_) => const CartPage(),
+          settings: settings,
+        );
+
+      case AppRouteNames.productDetail:
+        final product = settings.arguments as ProductEntity?;
+        if (product == null) {
+          return MaterialPageRoute<void>(
+            builder: (_) => const Scaffold(
+              body: Center(child: Text('Product not found.')),
+            ),
+            settings: settings,
+          );
+        }
+        return MaterialPageRoute<void>(
+          builder: (_) => ProductDetailPage(product: product),
           settings: settings,
         );
 

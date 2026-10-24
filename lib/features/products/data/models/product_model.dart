@@ -9,17 +9,47 @@ class ProductModel extends ProductEntity {
     required super.imageUrl,
     required super.category,
     required super.rating,
+    super.brand = '',
+    super.stock = 0,
+    super.discountPercentage = 0.0,
+    super.images = const [],
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
+    // Handle images array
+    final rawImages = json['images'];
+    List<String> imageList = [];
+    if (rawImages is List) {
+      imageList = rawImages.map((e) => e.toString()).toList();
+    }
+
+    // Handle thumbnail or imageUrl
+    String imgUrl = '';
+    if (json['thumbnail'] != null && json['thumbnail'].toString().isNotEmpty) {
+      imgUrl = json['thumbnail'].toString();
+    } else if (json['imageUrl'] != null &&
+        json['imageUrl'].toString().isNotEmpty) {
+      imgUrl = json['imageUrl'].toString();
+    } else if (imageList.isNotEmpty) {
+      imgUrl = imageList.first;
+    }
+
+    // Name or title
+    final title = (json['title'] ?? json['name'] ?? '').toString();
+
     return ProductModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      description: json['description'] as String,
-      price: (json['price'] as num).toDouble(),
-      imageUrl: json['imageUrl'] as String,
-      category: json['category'] as String,
-      rating: (json['rating'] as num).toDouble(),
+      id: json['id']?.toString() ?? '',
+      name: title,
+      description: (json['description'] ?? '').toString(),
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      imageUrl: imgUrl,
+      category: (json['category'] ?? '').toString(),
+      rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      brand: (json['brand'] ?? '').toString(),
+      stock: (json['stock'] as num?)?.toInt() ?? 0,
+      discountPercentage:
+          (json['discountPercentage'] as num?)?.toDouble() ?? 0.0,
+      images: imageList,
     );
   }
 
@@ -27,11 +57,17 @@ class ProductModel extends ProductEntity {
     return {
       'id': id,
       'name': name,
+      'title': name,
       'description': description,
       'price': price,
       'imageUrl': imageUrl,
+      'thumbnail': imageUrl,
       'category': category,
       'rating': rating,
+      'brand': brand,
+      'stock': stock,
+      'discountPercentage': discountPercentage,
+      'images': images,
     };
   }
 
@@ -44,6 +80,11 @@ class ProductModel extends ProductEntity {
       imageUrl: entity.imageUrl,
       category: entity.category,
       rating: entity.rating,
+      brand: entity.brand,
+      stock: entity.stock,
+      discountPercentage: entity.discountPercentage,
+      images: entity.images,
     );
   }
 }
+
